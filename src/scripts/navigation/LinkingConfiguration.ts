@@ -14,19 +14,29 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Activites: {
             screens: {
-              TabOneScreen: "one",
+              Activites: "activites",
             },
           },
-          TabTwo: {
+          Exercises: {
             screens: {
-              TabTwoScreen: "two",
+              Exercises: "exercises",
+            },
+          },
+          Workouts: {
+            screens: {
+              Workouts: "workouts",
             },
           },
         },
       },
-      Modal: "modal",
+      AddActivity: "addActivity",
+      EditActivity: "editActivity",
+      AddExercise: "addExercise",
+      EditExercise: "editExercise",
+      AddWorkout: "addWorkout",
+      EditWorkout: "editWorkout",
       NotFound: "*",
     },
   },

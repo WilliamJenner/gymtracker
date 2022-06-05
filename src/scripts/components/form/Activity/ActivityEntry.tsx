@@ -1,107 +1,114 @@
+import { View, ViewProps } from "@components/Themed";
 import { Picker } from "@react-native-picker/picker";
-import { black, white } from "@styles/appStyles";
+import { white } from "@styles/appStyles";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { Activity, MuscleGroup } from "../types/index";
-import TextField from "./TextField";
+import { Button, StyleSheet } from "react-native";
+import { Activity, MuscleGroup } from "../../../types/index";
+import { ThemedPicker, ThemedTextField } from "../Common/ThemedFormFields";
 
 interface IActivityEntryProps {
   onSubmit: SubmitHandler<Activity>;
+  viewProps?: ViewProps;
+  defaultValues: Activity;
 }
 
-export default function ActivityEntry({ onSubmit }: IActivityEntryProps) {
+export default function ActivityEntry({
+  viewProps,
+  onSubmit,
+  defaultValues,
+}: IActivityEntryProps) {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<Activity>({
-    defaultValues: {
-      name: "",
-      description: "",
-      muscleGroup: MuscleGroup.BACK,
-    },
+    defaultValues: defaultValues,
   });
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...viewProps}>
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: { value: true, message: "This is required" },
         }}
         render={({ field: { onChange, onBlur, value, name } }) => (
-          <TextField
-            viewProps={{ style: styles.textField }}
-            labelProps={{
-              style: styles.label,
-            }}
+          <ThemedTextField
             labelText={name}
             inputProps={{
               onBlur: onBlur,
               onChangeText: onChange,
               value: value,
-              style: styles.input,
             }}
+            validationLabelText={errors?.name?.message}
           />
         )}
         name="name"
       />
-      {errors.name && <Text>This is required.</Text>}
 
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: { value: true, message: "This is required" },
         }}
         render={({ field: { onChange, onBlur, value, name } }) => (
-          <TextField
-            viewProps={{ style: styles.textField }}
-            labelProps={{
-              style: styles.label,
-              lightColor: black,
-              darkColor: white,
-            }}
+          <ThemedTextField
             labelText={name}
             inputProps={{
               onBlur: onBlur,
               onChangeText: onChange,
               value: value,
-              style: styles.input,
             }}
+            validationLabelText={errors?.description?.message}
           />
         )}
         name="description"
       />
 
-      {errors.description && <Text>This is required.</Text>}
-
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: { value: true, message: "This is required" },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <Picker
+          <ThemedPicker
             selectedValue={value}
             onValueChange={onChange}
             onBlur={onBlur}
-            style={{
-              backgroundColor: white,
-              width: "80%",
-            }}
+            labelText="Muscle Group"
           >
             {Object.values(MuscleGroup).map((group: string | MuscleGroup) => {
               if (typeof group === "string") {
                 return <Picker.Item label={group} value={group} key={group} />;
               }
             })}
-          </Picker>
+          </ThemedPicker>
         )}
         name={"muscleGroup"}
       />
 
-      {errors.muscleGroup && <Text>This is required.</Text>}
+      <Controller
+        control={control}
+        rules={{
+          required: { value: true, message: "This is required" },
+        }}
+        render={({ field: { onChange, onBlur, value, name } }) => (
+          <ThemedTextField
+            labelText={name}
+            inputProps={{
+              onBlur: onBlur,
+              onChangeText: (text) => {
+                onChange(Number(text));
+              },
+              value: value.toString(),
+              keyboardType: "numeric",
+            }}
+            validationLabelText={errors?.oneRepMax?.message}
+          />
+        )}
+        name="oneRepMax"
+      />
 
       <View style={styles.button}>
         <Button title="Submit" onPress={handleSubmit(onSubmit)} />
@@ -117,12 +124,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "red",
-    borderWidth: 1,
-    borderColor: "blue",
-  },
-  textField: {
-    width: "100%",
     borderWidth: 1,
     borderColor: "blue",
   },

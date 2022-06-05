@@ -1,13 +1,14 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { OneRepMax } from "@hooks/useOneRepMax";
+import { OneRepMax } from "@hooks/useIntensity";
 import useStorage from "@hooks/useStorage";
 import { white } from "@styles/appStyles";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, FlatList, Pressable, StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import { Activity, MuscleGroup } from "../types/index";
-import TextField from "./TextField";
+import ActivitySelector from "./form/Activity/ActivitySelector";
+import TextField from "./form/Common/TextField";
 
 interface IOneRepMaxBuilderProps {
   onSubmit: (data: OneRepMax) => void;
@@ -38,42 +39,22 @@ export default function OneRepMaxBuilder({ onSubmit }: IOneRepMaxBuilderProps) {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur } }) => (
-          <FlatList
-            data={activites}
-            horizontal={true}
-            renderItem={({ item }: { item: Activity }) => {
-              return (
-                <Pressable
-                  onPress={() => {
-                    setValue("activity.name", item.name);
-                    setValue("activity.description", item.description);
-                    setValue("activity.muscleGroup", item.muscleGroup);
-                  }}
-                >
-                  {({ pressed }) => {
-                    return (
-                      <View
-                        style={{
-                          backgroundColor: pressed
-                            ? "green"
-                            : watchActivity.name === item.name
-                            ? "red"
-                            : "blue",
-                          ...styles.activityCard,
-                        }}
-                      >
-                        <Text>{item.name}</Text>
-                        <Text>{item.description}</Text>
-                        <Text>{item.muscleGroup}</Text>
-                      </View>
-                    );
-                  }}
-                </Pressable>
-              );
+          <ActivitySelector
+            activites={activites}
+            selectedActivity={watchActivity}
+            cardStyle={(pressed, pressedItem) => {
+              return {
+                backgroundColor: pressed
+                  ? "green"
+                  : watchActivity?.name === pressedItem.name
+                  ? "red"
+                  : "blue",
+                ...styles.activityCard,
+              };
             }}
-            keyExtractor={(item: Activity) =>
-              item.name + item.description + item.muscleGroup
-            }
+            onPress={(pressedItem) => {
+              setValue("activity", pressedItem);
+            }}
           />
         )}
         name="activity"
@@ -90,7 +71,7 @@ export default function OneRepMaxBuilder({ onSubmit }: IOneRepMaxBuilderProps) {
             labelProps={{
               style: styles.label,
             }}
-            labelText={name}
+            labelText={`${name} (kg)`}
             inputProps={{
               onBlur: onBlur,
               onChangeText: (text) => {
@@ -109,7 +90,6 @@ export default function OneRepMaxBuilder({ onSubmit }: IOneRepMaxBuilderProps) {
       <Button
         title={"Submit"}
         onPress={() => {
-          console.log(errors);
           handleSubmit(onSubmit)();
         }}
       />

@@ -1,19 +1,28 @@
-import ExerciseBuilder from "@components/ExerciseBuilder";
+import ExerciseBuilder from "@components/form/Exercise/ExerciseBuilder";
+import { Text, View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
 import { Exercise } from "@customTypes/index";
+import useIntensity from "@hooks/useIntensity";
 import useStorage from "@hooks/useStorage";
 import React from "react";
 import { Button, ScrollView, StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
 
-export default function TabTwoScreen() {
+export default function ExercisesScreen() {
   const { data: exercises, saveData: saveExercises } = useStorage<Exercise>({
     key: StorageKeys.Exercises,
   });
 
+  const { getWeightToLift } = useIntensity();
+
   return (
     <ScrollView>
       <View style={styles.container}>
+        <Button
+          title="Clear storage"
+          onPress={() => {
+            saveExercises([]);
+          }}
+        />
         <ExerciseBuilder
           onSubmit={(data) => {
             if (exercises) {
@@ -33,7 +42,9 @@ export default function TabTwoScreen() {
                 }
               >
                 <Text>{exercise.activity.name}</Text>
-                <Text>{exercise.intensity}% intense</Text>
+                <Text>
+                  {exercise.intensity}% intense | {getWeightToLift(exercise)} kg
+                </Text>
                 <Text>{exercise.reps} reps</Text>
                 <Text>{exercise.restTime} second rest</Text>
                 <Button

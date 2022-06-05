@@ -1,5 +1,9 @@
 export type AppTheme = "light" | "dark";
 
+export type StorageMetadata = {
+  id: string;
+};
+
 export enum MuscleGroup {
   "BACK",
   "CHEST",
@@ -8,20 +12,21 @@ export enum MuscleGroup {
   "SHOULDERS",
 }
 
-export type Activity = {
+export type Activity = StorageMetadata & {
   name: string;
   description: string;
   muscleGroup: MuscleGroup;
+  oneRepMax: number;
 };
 
-export type Exercise = {
+export type Exercise = StorageMetadata & {
   activity: Activity;
   reps: number;
   intensity: number;
   restTime: number;
 };
 
-export type Workout = {
+export type Workout = StorageMetadata & {
   exercises: Array<Exercise>;
   date?: Date;
   length?: number;
@@ -47,6 +52,18 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+  AddActivity: undefined;
+  EditActivity: {
+    activity: Activity;
+  };
+  AddExercise: undefined;
+  EditExercise: {
+    exercise: Exercise;
+  };
+  AddWorkout: undefined;
+  EditWorkout: {
+    workout: Workout;
+  };
   Modal: undefined;
   NotFound: undefined;
 };
@@ -55,9 +72,9 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  TabThree: undefined;
+  Activites: undefined;
+  Exercises: undefined;
+  Workouts: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

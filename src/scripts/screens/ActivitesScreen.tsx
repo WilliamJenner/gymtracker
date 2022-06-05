@@ -1,12 +1,12 @@
-import Activites from "@components/Activites";
+import Activites from "@components/form/Activity/Activites";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
-export default function TabOneScreen({
+export default function ActivitesScreen({
   navigation,
-}: RootTabScreenProps<"TabOne">) {
+}: RootTabScreenProps<"Activites">) {
   return (
     <View style={styles.container}>
       <Activites />

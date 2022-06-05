@@ -3,16 +3,11 @@ import useStorage from "@hooks/useStorage";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  Button,
-  FlatList,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
-import { Text, View } from "../components/Themed";
-import { Activity, Exercise, MuscleGroup, Workout } from "../types/index";
-import TextField from "./TextField";
+import { Button, ScrollView, StyleSheet } from "react-native";
+import { Activity, Exercise, MuscleGroup, Workout } from "../../../types/index";
+import { Text, View } from "../../Themed";
+import ActivitySelector from "../Activity/ActivitySelector";
+import TextField from "../Common/TextField";
 
 interface IExerciseBuilderProps {
   onSubmit: (data: Exercise) => void;
@@ -34,8 +29,6 @@ const ExerciseBuilder = ({ onSubmit }: IExerciseBuilderProps) => {
     },
   });
 
-  const onError = (errors: any, e: any) => console.log(errors, e);
-
   const { data: activites } = useStorage<Activity>({
     key: StorageKeys.Activites,
   });
@@ -51,42 +44,22 @@ const ExerciseBuilder = ({ onSubmit }: IExerciseBuilderProps) => {
         <Controller
           control={control}
           render={({ field: { onChange, onBlur } }) => (
-            <FlatList
-              data={activites}
-              horizontal={true}
-              renderItem={({ item }: { item: Activity }) => {
-                return (
-                  <Pressable
-                    onPress={() => {
-                      setValue("activity.name", item.name);
-                      setValue("activity.description", item.description);
-                      setValue("activity.muscleGroup", item.muscleGroup);
-                    }}
-                  >
-                    {({ pressed }) => {
-                      return (
-                        <View
-                          style={{
-                            backgroundColor: pressed
-                              ? "green"
-                              : watchActivity.name === item.name
-                              ? "red"
-                              : "blue",
-                            ...styles.activityCard,
-                          }}
-                        >
-                          <Text>{item.name}</Text>
-                          <Text>{item.description}</Text>
-                          <Text>{item.muscleGroup}</Text>
-                        </View>
-                      );
-                    }}
-                  </Pressable>
-                );
+            <ActivitySelector
+              activites={activites}
+              selectedActivity={watchActivity}
+              cardStyle={(pressed, pressedItem) => {
+                return {
+                  backgroundColor: pressed
+                    ? "green"
+                    : watchActivity?.name === pressedItem.name
+                    ? "red"
+                    : "blue",
+                  ...styles.activityCard,
+                };
               }}
-              keyExtractor={(item: Activity) =>
-                item.name + item.description + item.muscleGroup
-              }
+              onPress={(pressedItem) => {
+                setValue("activity", pressedItem);
+              }}
             />
           )}
           name="activity"
@@ -178,8 +151,7 @@ const ExerciseBuilder = ({ onSubmit }: IExerciseBuilderProps) => {
         <Button
           title={"Submit"}
           onPress={() => {
-            console.log(errors);
-            handleSubmit(onSubmit, onError)();
+            handleSubmit(onSubmit)();
           }}
         />
       </View>

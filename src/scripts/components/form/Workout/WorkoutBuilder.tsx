@@ -3,7 +3,7 @@ import { Activity, Workout } from "@customTypes/index";
 import useStorage from "@hooks/useStorage";
 import * as React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { View } from "../components/Themed";
+import { View } from "../../Themed";
 
 const WorkoutBuilder = () => {
   const { data: activites } = useStorage<Activity>({
@@ -12,8 +12,6 @@ const WorkoutBuilder = () => {
   const { data: workouts } = useStorage<Workout>({
     key: StorageKeys.Workouts,
   });
-
-  console.log(activites);
 
   return (
     <ScrollView>

@@ -12,6 +12,6 @@
       "@utils/*": ["./src/scripts/utils/*"],
       "@styles/*": ["./src/scripts/styles/*"],
     },
-    "types": ["./src/scripts/types/index.d.ts"],
+    "types": ["./src/scripts/types/index.d.ts", "jest"],
   }
 }
