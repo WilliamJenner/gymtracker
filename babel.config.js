@@ -25,6 +25,7 @@ module.exports = function (api) {
             "@screens": "./src/scripts/screens/",
             "@types": "./src/scripts/types/",
             "@utils": "./src/scripts/utils/",
+            "@styles": "./src/scripts/styles/",
           },
         },
       ],

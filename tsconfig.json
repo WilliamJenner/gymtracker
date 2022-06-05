@@ -10,6 +10,7 @@
       "@screens/*": ["./src/scripts/screens/*"],
       "@customTypes/*": ["./src/scripts/types/*"],
       "@utils/*": ["./src/scripts/utils/*"],
+      "@styles/*": ["./src/scripts/styles/*"],
     },
     "types": ["./src/scripts/types/index.d.ts"],
   }

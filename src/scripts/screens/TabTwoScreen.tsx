@@ -1,18 +1,66 @@
-import { StyleSheet } from "react-native";
-import EditScreenInfo from "../components/EditScreenInfo";
+import ExerciseBuilder from "@components/ExerciseBuilder";
+import { StorageKeys } from "@constants/StorageKeys";
+import { Exercise } from "@customTypes/index";
+import useStorage from "@hooks/useStorage";
+import React from "react";
+import { Button, ScrollView, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 
 export default function TabTwoScreen() {
+  const { data: exercises, saveData: saveExercises } = useStorage<Exercise>({
+    key: StorageKeys.Exercises,
+  });
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <ExerciseBuilder
+          onSubmit={(data) => {
+            if (exercises) {
+              saveExercises([...exercises, data]);
+            } else {
+              saveExercises([data]);
+            }
+          }}
+        />
+
+        <View style={{ flex: 1 }}>
+          {exercises?.map((exercise) => {
+            return (
+              <View
+                key={
+                  exercise.activity.name + exercise.intensity + exercise.reps
+                }
+              >
+                <Text>{exercise.activity.name}</Text>
+                <Text>{exercise.intensity}% intense</Text>
+                <Text>{exercise.reps} reps</Text>
+                <Text>{exercise.restTime} second rest</Text>
+                <Button
+                  title={"DELETE"}
+                  onPress={() => {
+                    saveExercises([
+                      ...exercises.filter((value) => {
+                        return (
+                          value.activity.name === exercise.activity.name &&
+                          value.activity.description ===
+                            exercise.activity.description &&
+                          value.activity.muscleGroup ===
+                            exercise.activity.muscleGroup &&
+                          value.intensity === exercise.intensity &&
+                          value.reps === exercise.reps
+                        );
+                      }),
+                    ]);
+                  }}
+                />
+              </View>
+            );
+          })}
+        </View>
+        {/* <WorkoutBuilder /> */}
+      </View>
+    </ScrollView>
   );
 }
 

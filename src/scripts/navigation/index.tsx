@@ -16,6 +16,7 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import TabThreeScreen from "@screens/TabThreeScreen";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 import Colors from "../constants/Colors";
@@ -113,6 +114,15 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: "Tab Two",
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name="TabThree"
+        component={TabThreeScreen}
+        options={{
+          title: "Tab Three",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

@@ -1,13 +1,17 @@
 export type AppTheme = "light" | "dark";
 
+export enum MuscleGroup {
+  "BACK",
+  "CHEST",
+  "CORE",
+  "LEGS",
+  "SHOULDERS",
+}
+
 export type Activity = {
   name: string;
-  muscleGroup: string;
-  back: boolean;
-  chest: boolean;
-  core: boolean;
-  legs: boolean;
-  shoulders: boolean;
+  description: string;
+  muscleGroup: MuscleGroup;
 };
 
 export type Exercise = {
@@ -19,8 +23,8 @@ export type Exercise = {
 
 export type Workout = {
   exercises: Array<Exercise>;
-  date: Date;
-  length: number;
+  date?: Date;
+  length?: number;
 };
 
 /**
@@ -53,6 +57,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 export type RootTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
+  TabThree: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
