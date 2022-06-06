@@ -37,6 +37,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       EditExercise: "editExercise",
       AddWorkout: "addWorkout",
       EditWorkout: "editWorkout",
+      WorkoutProgress: "workoutProgress",
       NotFound: "*",
     },
   },

@@ -1,4 +1,4 @@
-import ActivityEntry from "@components/form/Activity/ActivityEntry";
+import ActivityForm from "@components/form/Activity/ActivityForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
 import useStorage from "@hooks/useStorage";
@@ -20,7 +20,7 @@ export default function AddActivityScreen() {
     <View style={styles.container}>
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
 
-      <ActivityEntry
+      <ActivityForm
         viewProps={{
           style: [styles.activityEntry],
         }}

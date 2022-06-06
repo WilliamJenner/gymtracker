@@ -1,3 +1,4 @@
+import WorkoutForm from "@components/form/Workout/WorkoutForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
 import useStorage from "@hooks/useStorage";
@@ -23,6 +24,17 @@ export const EditWorkoutScreen = ({
   return (
     <View style={styles.container}>
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+
+      <WorkoutForm
+        onSubmit={(data) => {
+          editData(data, (value) => {
+            return value.id === data.id;
+          });
+
+          navigation.goBack();
+        }}
+        defaultValues={workout}
+      />
     </View>
   );
 };

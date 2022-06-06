@@ -13,7 +13,7 @@ interface IActivityEntryProps {
   defaultValues: Activity;
 }
 
-export default function ActivityEntry({
+export default function ActivityForm({
   viewProps,
   onSubmit,
   defaultValues,

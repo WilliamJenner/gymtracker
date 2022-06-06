@@ -23,6 +23,7 @@ import { AddExerciseScreen } from "@screens/Form/Exercise/AddExerciseScreen";
 import { EditExerciseScreen } from "@screens/Form/Exercise/EditExerciseScreen";
 import AddWorkoutScreen from "@screens/Form/Workout/AddWorkoutScreen";
 import { EditWorkoutScreen } from "@screens/Form/Workout/EditWorkoutScreen";
+import WorkoutProgressScreen from "@screens/WorkoutProgressScreen";
 import WorkoutsScreen from "@screens/WorkoutsScreen";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
@@ -101,6 +102,11 @@ function RootNavigator() {
           name="EditWorkout"
           component={EditWorkoutScreen}
           options={{ title: "Edit Workout" }}
+        />
+        <Stack.Screen
+          name="WorkoutProgress"
+          component={WorkoutProgressScreen}
+          options={{ title: "Workout" }}
         />
       </Stack.Group>
     </Stack.Navigator>

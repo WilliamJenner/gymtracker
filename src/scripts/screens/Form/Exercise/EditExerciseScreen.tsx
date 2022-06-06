@@ -1,3 +1,4 @@
+import ExerciseForm from "@components/form/Exercise/ExerciseForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
 import useStorage from "@hooks/useStorage";
@@ -23,6 +24,17 @@ export const EditExerciseScreen = ({
   return (
     <View style={styles.container}>
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+
+      <ExerciseForm
+        onSubmit={(data) => {
+          editData(data, (value) => {
+            return value.id === data.id;
+          });
+
+          navigation.goBack();
+        }}
+        defaultValues={exercise}
+      />
     </View>
   );
 };

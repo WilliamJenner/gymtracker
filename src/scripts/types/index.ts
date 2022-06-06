@@ -20,14 +20,20 @@ export type Activity = StorageMetadata & {
 };
 
 export type Exercise = StorageMetadata & {
-  activity: Activity;
+  activityId: string;
   reps: number;
   intensity: number;
   restTime: number;
 };
 
+export type GymSet = StorageMetadata & {
+  exerciseId: string;
+  reps: number;
+};
+
 export type Workout = StorageMetadata & {
-  exercises: Array<Exercise>;
+  sets: Array<GymSet>;
+  name: string;
   date?: Date;
   length?: number;
 };
@@ -66,6 +72,9 @@ export type RootStackParamList = {
   };
   Modal: undefined;
   NotFound: undefined;
+  WorkoutProgress: {
+    workout: Workout;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

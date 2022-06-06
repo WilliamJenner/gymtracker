@@ -1,15 +1,21 @@
-import ExerciseBuilder from "@components/form/Exercise/ExerciseBuilder";
 import { Text, View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import { Exercise } from "@customTypes/index";
 import useIntensity from "@hooks/useIntensity";
 import useStorage from "@hooks/useStorage";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Button, ScrollView, StyleSheet } from "react-native";
+import { Activity, Exercise } from "../types/index";
 
-export default function ExercisesScreen() {
+export default function ExercisesScreen({}) {
+  const { navigate } = useNavigation();
+
   const { data: exercises, saveData: saveExercises } = useStorage<Exercise>({
     key: StorageKeys.Exercises,
+  });
+
+  const { findData: findActivity } = useStorage<Activity>({
+    key: StorageKeys.Activites,
   });
 
   const { getWeightToLift } = useIntensity();
@@ -23,44 +29,36 @@ export default function ExercisesScreen() {
             saveExercises([]);
           }}
         />
-        <ExerciseBuilder
-          onSubmit={(data) => {
-            if (exercises) {
-              saveExercises([...exercises, data]);
-            } else {
-              saveExercises([data]);
-            }
-          }}
-        />
 
         <View style={{ flex: 1 }}>
           {exercises?.map((exercise) => {
+            const activity = findActivity(exercise.activityId);
+
             return (
-              <View
-                key={
-                  exercise.activity.name + exercise.intensity + exercise.reps
-                }
-              >
-                <Text>{exercise.activity.name}</Text>
+              <View key={exercise.id}>
+                <Text>{activity?.name}</Text>
                 <Text>
-                  {exercise.intensity}% intense | {getWeightToLift(exercise)} kg
+                  {exercise.intensity}% intense |{" "}
+                  {getWeightToLift(
+                    activity?.oneRepMax ?? 0,
+                    exercise.intensity
+                  )}{" "}
+                  kg
                 </Text>
                 <Text>{exercise.reps} reps</Text>
                 <Text>{exercise.restTime} second rest</Text>
+                <Button
+                  title={"Edit"}
+                  onPress={() => {
+                    navigate("EditExercise", { exercise });
+                  }}
+                />
                 <Button
                   title={"DELETE"}
                   onPress={() => {
                     saveExercises([
                       ...exercises.filter((value) => {
-                        return (
-                          value.activity.name === exercise.activity.name &&
-                          value.activity.description ===
-                            exercise.activity.description &&
-                          value.activity.muscleGroup ===
-                            exercise.activity.muscleGroup &&
-                          value.intensity === exercise.intensity &&
-                          value.reps === exercise.reps
-                        );
+                        return value.id !== exercise.id;
                       }),
                     ]);
                   }}
@@ -69,7 +67,6 @@ export default function ExercisesScreen() {
             );
           })}
         </View>
-        {/* <WorkoutBuilder /> */}
       </View>
     </ScrollView>
   );
