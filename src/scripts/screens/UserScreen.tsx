@@ -1,6 +1,6 @@
 import UserNamePasswordForm from "@components/form/UserNamePassword/UserNamePasswordForm";
 import { FirebaseAuthContainer } from "@hooks/firebase/useFirebaseAuth";
-import useUsers from "@hooks/query/useUsers";
+import useTest from "@hooks/query/UseTest";
 import React from "react";
 import { Button, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
@@ -11,8 +11,7 @@ export default function UserScreen({
 }: RootStackScreenProps<"User">) {
   const { isLoggedIn, logIn, signOutOfApp } =
     FirebaseAuthContainer.useContainer();
-  const { users } = useUsers();
-  console.log(users);
+  const {} = useTest();
 
   return (
     <>

@@ -4,17 +4,20 @@ import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 interface IUseExercise {
-  exercise: UseQueryResult<Array<Exercise>, Error>;
+  exercises: UseQueryResult<Array<Exercise>, Error>;
 }
 
 const useExercise = (): IUseExercise => {
   const { getData } = useFirebaseFirestore<Exercise>({
     collectionKey: StorageKeys.Exercises,
   });
-  const exercise = useQuery<Array<Exercise>, Error>(["exercise"], getData);
+  const exercises = useQuery<Array<Exercise>, Error>(
+    [StorageKeys.Exercises],
+    getData
+  );
 
   return {
-    exercise,
+    exercises,
   };
 };
 

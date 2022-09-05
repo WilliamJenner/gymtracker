@@ -3,6 +3,8 @@ import { StorageMetadata } from "@customTypes/index";
 import {
   collection,
   doc,
+  DocumentReference,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -33,6 +35,7 @@ interface IUseFirebaseFirestore<TData extends StorageMetadata> {
   getData: () => Promise<TData[]>;
   saveData: (data: TData) => Promise<void>;
   updateData: (data: TData) => Promise<void>;
+  getDocument: (document: DocumentReference) => Promise<TData>;
 }
 
 export const useFirebaseFirestore = <TData extends StorageMetadata>({
@@ -62,9 +65,15 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     return await updateDoc(document, data);
   };
 
+  const getDocument = async (document: DocumentReference): Promise<TData> => {
+    const doc = await getDoc(document);
+    return doc.data() as TData;
+  };
+
   return {
     getData,
     saveData,
     updateData,
+    getDocument,
   };
 };

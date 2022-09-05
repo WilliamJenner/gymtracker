@@ -3,4 +3,5 @@ export enum StorageKeys {
   Exercises = "EXERCISES",
   OneRepMax = "ONEREPMAX",
   Workouts = "WORKOUTS",
+  test = "test",
 }

@@ -1,9 +1,9 @@
-import { Text, View } from "@components/Themed";
+import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
 import { Activity, RootStackParamList } from "@customTypes/index";
 import { FontAwesome } from "@expo/vector-icons";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
-import useExercise from "@hooks/query/useExercise";
+import useActivity from "@hooks/query/useActivity";
 import useColorScheme from "@hooks/useColorScheme";
 import useIntensity from "@hooks/useIntensity";
 import useWorkoutProgress from "@hooks/useWorkoutProgress";
@@ -22,7 +22,7 @@ const WorkoutProgressScreen = ({
 }: IWorkoutProgressScreenProps) => {
   const { workout } = route.params;
 
-  const { exercise } = useExercise();
+  const { activity } = useActivity();
   const { getData } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
   });
@@ -51,14 +51,10 @@ const WorkoutProgressScreen = ({
     },
   });
 
-  const currentExercise = findExercise(currentSet?.exerciseId);
-  const currentActivity =
-    currentExercise && findActivity(currentExercise?.activityId);
-
   return (
     <View style={styles.container}>
       <View style={[styles.currentSet]}>
-        <Text style={styles.header}>{currentActivity?.name}</Text>
+        {/* <Text style={styles.header}>{currentActivity?.name}</Text>
         <Text>{currentExercise?.reps} reps</Text>
         <Text>
           {currentActivity &&
@@ -75,7 +71,7 @@ const WorkoutProgressScreen = ({
 
         <Text>
           {timeRested} / {currentExercise?.restTime} seconds
-        </Text>
+        </Text> */}
       </View>
 
       <View style={styles.buttons}>

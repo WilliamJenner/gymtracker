@@ -2,6 +2,7 @@ export type AppTheme = "light" | "dark";
 
 export type StorageMetadata = {
   id: string;
+  userId: string;
 };
 
 export enum MuscleGroup {

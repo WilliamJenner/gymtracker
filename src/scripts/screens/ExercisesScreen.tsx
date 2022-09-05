@@ -1,17 +1,16 @@
-import { Text, View } from "@components/Themed";
+import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
-import useExercise from "@hooks/query/useExercise";
 import useIntensity from "@hooks/useIntensity";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Button, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { Activity } from "../types/index";
 
 export default function ExercisesScreen({}) {
   const { navigate } = useNavigation();
 
-  const { exercise: exercises } = useExercise();
+  //   const { exercise: exercises } = useActivity();
 
   const { getData } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
@@ -23,7 +22,7 @@ export default function ExercisesScreen({}) {
     <ScrollView>
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
-          {exercises.data?.map((exercise) => {
+          {/* {exercises.data?.map((exercise) => {
             return (
               <View key={exercise.id}>
                 <Text>{exercise.reps} reps</Text>
@@ -37,7 +36,7 @@ export default function ExercisesScreen({}) {
                 <Button title={"DELETE"} onPress={() => {}} />
               </View>
             );
-          })}
+          })} */}
         </View>
       </View>
     </ScrollView>
