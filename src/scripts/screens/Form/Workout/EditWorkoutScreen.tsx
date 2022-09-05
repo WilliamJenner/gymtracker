@@ -1,7 +1,7 @@
 import WorkoutForm from "@components/form/Workout/WorkoutForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import useStorage from "@hooks/useStorage";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
@@ -15,8 +15,8 @@ export const EditWorkoutScreen = ({
   route,
   navigation,
 }: EditActivityScreenProps) => {
-  const { data, editData } = useStorage<Workout>({
-    key: StorageKeys.Workouts,
+  const { getData, saveData } = useFirebaseFirestore<Workout>({
+    collectionKey: StorageKeys.Workouts,
   });
 
   const { workout } = route.params;
@@ -27,9 +27,7 @@ export const EditWorkoutScreen = ({
 
       <WorkoutForm
         onSubmit={(data) => {
-          editData(data, (value) => {
-            return value.id === data.id;
-          });
+          saveData(data);
 
           navigation.goBack();
         }}

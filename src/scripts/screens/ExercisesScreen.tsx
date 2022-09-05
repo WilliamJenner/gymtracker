@@ -1,21 +1,20 @@
 import { Text, View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
+import useExercise from "@hooks/query/useExercise";
 import useIntensity from "@hooks/useIntensity";
-import useStorage from "@hooks/useStorage";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Button, ScrollView, StyleSheet } from "react-native";
-import { Activity, Exercise } from "../types/index";
+import { Activity } from "../types/index";
 
 export default function ExercisesScreen({}) {
   const { navigate } = useNavigation();
 
-  const { data: exercises, saveData: saveExercises } = useStorage<Exercise>({
-    key: StorageKeys.Exercises,
-  });
+  const { exercise: exercises } = useExercise();
 
-  const { findData: findActivity } = useStorage<Activity>({
-    key: StorageKeys.Activites,
+  const { getData } = useFirebaseFirestore<Activity>({
+    collectionKey: StorageKeys.Activites,
   });
 
   const { getWeightToLift } = useIntensity();
@@ -23,28 +22,10 @@ export default function ExercisesScreen({}) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Button
-          title="Clear storage"
-          onPress={() => {
-            saveExercises([]);
-          }}
-        />
-
         <View style={{ flex: 1 }}>
-          {exercises?.map((exercise) => {
-            const activity = findActivity(exercise.activityId);
-
+          {exercises.data?.map((exercise) => {
             return (
               <View key={exercise.id}>
-                <Text>{activity?.name}</Text>
-                <Text>
-                  {exercise.intensity}% intense |{" "}
-                  {getWeightToLift(
-                    activity?.oneRepMax ?? 0,
-                    exercise.intensity
-                  )}{" "}
-                  kg
-                </Text>
                 <Text>{exercise.reps} reps</Text>
                 <Text>{exercise.restTime} second rest</Text>
                 <Button
@@ -53,16 +34,7 @@ export default function ExercisesScreen({}) {
                     navigate("EditExercise", { exercise });
                   }}
                 />
-                <Button
-                  title={"DELETE"}
-                  onPress={() => {
-                    saveExercises([
-                      ...exercises.filter((value) => {
-                        return value.id !== exercise.id;
-                      }),
-                    ]);
-                  }}
-                />
+                <Button title={"DELETE"} onPress={() => {}} />
               </View>
             );
           })}

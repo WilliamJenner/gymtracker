@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import useStorage from "@hooks/useStorage";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -26,11 +26,9 @@ const SetsForm = ({ onSubmit, viewProps, defaultValues }: ISetsFormProps) => {
     defaultValues: defaultValues,
   });
 
-  const { data: exercises } = useStorage<Exercise>({
-    key: StorageKeys.Exercises,
+  const { getData: exercises } = useFirebaseFirestore<Exercise>({
+    collectionKey: StorageKeys.Exercises,
   });
-
-  const watchExercise = watch("exerciseId");
 
   return (
     <View style={styles.container} {...viewProps}>

@@ -1,6 +1,6 @@
 import { StorageKeys } from "@constants/StorageKeys";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { OneRepMax } from "@hooks/useIntensity";
-import useStorage from "@hooks/useStorage";
 import { white } from "@styles/appStyles";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -28,11 +28,9 @@ export default function OneRepMaxBuilder({ onSubmit }: IOneRepMaxBuilderProps) {
     },
   });
 
-  const { data: activites } = useStorage<Activity>({
-    key: StorageKeys.Activites,
+  const { getData: activites } = useFirebaseFirestore<Activity>({
+    collectionKey: StorageKeys.Activites,
   });
-
-  const watchActivity = watch("activity");
 
   return (
     <View style={styles.container}>

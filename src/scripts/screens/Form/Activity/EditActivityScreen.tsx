@@ -1,7 +1,7 @@
 import ActivityForm from "@components/form/Activity/ActivityForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import useStorage from "@hooks/useStorage";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
@@ -15,8 +15,8 @@ export const EditActivityScreen = ({
   route,
   navigation,
 }: EditActivityScreenProps) => {
-  const { data, editData } = useStorage<Activity>({
-    key: StorageKeys.Activites,
+  const { updateData } = useFirebaseFirestore<Activity>({
+    collectionKey: StorageKeys.Activites,
   });
 
   const { activity } = route.params;
@@ -30,13 +30,7 @@ export const EditActivityScreen = ({
           style: [styles.activityEntry],
         }}
         onSubmit={(value) => {
-          editData(value, (value) => {
-            return (
-              value.name === activity.name &&
-              value.muscleGroup === activity.muscleGroup
-            );
-          });
-
+          updateData(value);
           navigation.goBack();
         }}
         defaultValues={activity}

@@ -58,6 +58,7 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+  User: undefined;
   AddActivity: undefined;
   EditActivity: {
     activity: Activity;
@@ -82,6 +83,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type RootTabParamList = {
   Activites: undefined;
+  User: undefined;
   Exercises: undefined;
   Workouts: undefined;
 };

@@ -1,7 +1,7 @@
 import ExerciseForm from "@components/form/Exercise/ExerciseForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import useStorage from "@hooks/useStorage";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import useUuid from "@hooks/useUuid";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
@@ -11,9 +11,10 @@ import { Exercise } from "../../../types/index";
 
 export const AddExerciseScreen = () => {
   const navigation = useNavigation();
-  const { data: exercises, saveData: saveExercises } = useStorage<Exercise>({
-    key: StorageKeys.Exercises,
-  });
+  const { getData: getExercises, saveData: saveExercises } =
+    useFirebaseFirestore<Exercise>({
+      collectionKey: StorageKeys.Exercises,
+    });
 
   const { generate } = useUuid();
 
@@ -25,11 +26,7 @@ export const AddExerciseScreen = () => {
         onSubmit={(data) => {
           data.id = generate();
 
-          if (exercises) {
-            saveExercises([...exercises, data]);
-          } else {
-            saveExercises([data]);
-          }
+          saveExercises(data);
 
           navigation.goBack();
         }}

@@ -1,7 +1,7 @@
 import WorkoutForm from "@components/form/Workout/WorkoutForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import useStorage from "@hooks/useStorage";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import useUuid from "@hooks/useUuid";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
@@ -11,9 +11,10 @@ import { Workout } from "../../../types/index";
 
 export default function AddWorkoutScreen() {
   const navigation = useNavigation();
-  const { data: workouts, saveData: saveWorkout } = useStorage<Workout>({
-    key: StorageKeys.Workouts,
-  });
+  const { getData: workouts, saveData: saveWorkout } =
+    useFirebaseFirestore<Workout>({
+      collectionKey: StorageKeys.Workouts,
+    });
   const { generate } = useUuid();
 
   return (
@@ -24,11 +25,7 @@ export default function AddWorkoutScreen() {
         onSubmit={(data) => {
           data.id = generate();
 
-          if (workouts) {
-            saveWorkout([...workouts, data]);
-          } else {
-            saveWorkout([data]);
-          }
+          saveWorkout(data);
 
           navigation.goBack();
         }}

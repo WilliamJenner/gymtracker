@@ -23,6 +23,7 @@ import { AddExerciseScreen } from "@screens/Form/Exercise/AddExerciseScreen";
 import { EditExerciseScreen } from "@screens/Form/Exercise/EditExerciseScreen";
 import AddWorkoutScreen from "@screens/Form/Workout/AddWorkoutScreen";
 import { EditWorkoutScreen } from "@screens/Form/Workout/EditWorkoutScreen";
+import UserScreen from "@screens/UserScreen";
 import WorkoutProgressScreen from "@screens/WorkoutProgressScreen";
 import WorkoutsScreen from "@screens/WorkoutsScreen";
 import * as React from "react";
@@ -67,6 +68,11 @@ function RootNavigator() {
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
+        options={{ title: "Oops!" }}
+      />
+      <Stack.Screen
+        name="User"
+        component={UserScreen}
         options={{ title: "Oops!" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
@@ -130,6 +136,14 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
+        name="User"
+        component={UserScreen}
+        options={({ navigation }: RootTabScreenProps<"User">) => ({
+          title: "User",
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+        })}
+      />
+      <BottomTab.Screen
         name="Activites"
         component={ActivitesScreen}
         options={({ navigation }: RootTabScreenProps<"Activites">) => ({
@@ -154,6 +168,7 @@ function BottomTabNavigator() {
           ),
         })}
       />
+
       <BottomTab.Screen
         name="Exercises"
         component={ExercisesScreen}

@@ -1,7 +1,7 @@
 import ActivityForm from "@components/form/Activity/ActivityForm";
 import { View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import useStorage from "@hooks/useStorage";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import useUuid from "@hooks/useUuid";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
@@ -11,9 +11,10 @@ import { Activity, MuscleGroup } from "../../../types/index";
 
 export default function AddActivityScreen() {
   const navigation = useNavigation();
-  const { data: activites, saveData: saveActivity } = useStorage<Activity>({
-    key: StorageKeys.Activites,
-  });
+  const { getData: getActivites, saveData: saveActivity } =
+    useFirebaseFirestore<Activity>({
+      collectionKey: StorageKeys.Activites,
+    });
   const { generate } = useUuid();
 
   return (
@@ -27,11 +28,7 @@ export default function AddActivityScreen() {
         onSubmit={(value) => {
           value.id = generate();
 
-          if (activites) {
-            saveActivity([...activites, value]);
-          } else {
-            saveActivity([value]);
-          }
+          saveActivity(value);
 
           navigation.goBack();
         }}

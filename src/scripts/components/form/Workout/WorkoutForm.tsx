@@ -1,8 +1,8 @@
 import Colors from "@constants/Colors";
 import { StorageKeys } from "@constants/StorageKeys";
 import { FontAwesome } from "@expo/vector-icons";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import useColorScheme from "@hooks/useColorScheme";
-import useStorage from "@hooks/useStorage";
 import useUuid from "@hooks/useUuid";
 import { white } from "@styles/appStyles";
 import * as React from "react";
@@ -34,15 +34,13 @@ const WorkoutForm = ({
     defaultValues: defaultValues,
   });
 
-  const { data: exercises, findData: findExercise } = useStorage<Exercise>({
-    key: StorageKeys.Exercises,
+  const { getData: exercises } = useFirebaseFirestore<Exercise>({
+    collectionKey: StorageKeys.Exercises,
   });
 
-  const { findData: findActivity } = useStorage<Activity>({
-    key: StorageKeys.Activites,
+  const { getData } = useFirebaseFirestore<Activity>({
+    collectionKey: StorageKeys.Activites,
   });
-
-  const watchSets = watch("sets");
 
   const { generate } = useUuid();
 

@@ -1,10 +1,11 @@
 import { Text, View } from "@components/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity, Exercise, RootStackParamList } from "@customTypes/index";
+import { Activity, RootStackParamList } from "@customTypes/index";
 import { FontAwesome } from "@expo/vector-icons";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
+import useExercise from "@hooks/query/useExercise";
 import useColorScheme from "@hooks/useColorScheme";
 import useIntensity from "@hooks/useIntensity";
-import useStorage from "@hooks/useStorage";
 import useWorkoutProgress from "@hooks/useWorkoutProgress";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { white } from "@styles/appStyles";
@@ -21,11 +22,9 @@ const WorkoutProgressScreen = ({
 }: IWorkoutProgressScreenProps) => {
   const { workout } = route.params;
 
-  const { findData: findExercise } = useStorage<Exercise>({
-    key: StorageKeys.Exercises,
-  });
-  const { findData: findActivity } = useStorage<Activity>({
-    key: StorageKeys.Activites,
+  const { exercise } = useExercise();
+  const { getData } = useFirebaseFirestore<Activity>({
+    collectionKey: StorageKeys.Activites,
   });
 
   const { getWeightToLift } = useIntensity();

@@ -1,10 +1,9 @@
 import { StorageKeys } from "@constants/StorageKeys";
 import { Activity, Exercise } from "@customTypes/index";
+import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import useIntensity from "@hooks/useIntensity";
-import useStorage from "@hooks/useStorage";
 import React from "react";
 import { FlatList, Pressable, StyleProp, ViewStyle } from "react-native";
-import { Text, View } from "../../Themed";
 
 interface IExerciseSelectorProps {
   exercises?: Array<Exercise>;
@@ -19,8 +18,8 @@ const ActivitySelector = ({
   cardStyle,
   onPress,
 }: IExerciseSelectorProps) => {
-  const { findData: findActivity } = useStorage<Activity>({
-    key: StorageKeys.Activites,
+  const {} = useFirebaseFirestore<Activity>({
+    collectionKey: StorageKeys.Activites,
   });
 
   const { getWeightToLift } = useIntensity();
@@ -36,22 +35,7 @@ const ActivitySelector = ({
               onPress && onPress(item);
             }}
           >
-            {({ pressed }) => {
-              const activity = findActivity(item.activityId);
-
-              return (
-                <View style={cardStyle && cardStyle(pressed, item)}>
-                  <Text>{activity?.name}</Text>
-                  <Text>
-                    {item.intensity}% intense |{" "}
-                    {getWeightToLift(activity?.oneRepMax ?? 0, item.intensity)}{" "}
-                    kg
-                  </Text>
-                  <Text>{item.reps} reps</Text>
-                  <Text>{item.restTime} rest time</Text>
-                </View>
-              );
-            }}
+            {({ pressed }) => {}}
           </Pressable>
         );
       }}

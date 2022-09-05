@@ -1,10 +1,9 @@
 import ExerciseSelector from "@components/form/Exercise/ExerciseSelector";
 import Colors from "@constants/Colors";
-import { StorageKeys } from "@constants/StorageKeys";
-import { Exercise, Workout } from "@customTypes/index";
 import { FontAwesome } from "@expo/vector-icons";
+import useExercise from "@hooks/query/useExercise";
+import useWorkout from "@hooks/query/useWorkout";
 import useColorScheme from "@hooks/useColorScheme";
-import useStorage from "@hooks/useStorage";
 import { useNavigation } from "@react-navigation/native";
 import { java } from "@styles/appStyles";
 import React from "react";
@@ -15,22 +14,14 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import { Text, View } from "../components/Themed";
+import { View } from "../components/Themed";
 
 export const WorkoutsScreen = () => {
   const { navigate } = useNavigation();
 
-  const {
-    data: workouts,
-    saveData,
-    findData: findWorkout,
-  } = useStorage<Workout>({
-    key: StorageKeys.Workouts,
-  });
+  const { workout } = useWorkout();
 
-  const { findData: findExercise } = useStorage<Exercise>({
-    key: StorageKeys.Exercises,
-  });
+  const { exercise } = useExercise();
 
   const colorScheme = useColorScheme();
 
@@ -41,29 +32,15 @@ export const WorkoutsScreen = () => {
 
         <View style={{ flex: 1 }}>
           <FlatList
-            data={workouts}
+            data={exercise?.data}
             horizontal={true}
             renderItem={({ item }) => {
-              const selectedExercises = item.sets
-                .map((set) => {
-                  return findExercise(set.exerciseId);
-                })
-                .filter((value) => {
-                  return value !== undefined;
-                });
-
-              console.log(selectedExercises);
-
               return (
                 <View key={item?.id} style={[styles.workoutCard]}>
-                  <Text>{item.name}</Text>
-                  <Text>{item.id}</Text>
-                  <Text>{item?.sets.length} sets</Text>
-
-                  {selectedExercises && (
+                  {exercise?.data && (
                     <ExerciseSelector
-                      exercises={selectedExercises as Exercise[]}
-                      selectedActivity={selectedExercises[0]}
+                      exercises={exercise?.data}
+                      selectedActivity={exercise?.data[0]}
                       cardStyle={(pressed, pressedItem) => {
                         return {
                           backgroundColor: pressed ? "green" : "blue",
@@ -75,31 +52,7 @@ export const WorkoutsScreen = () => {
                   )}
 
                   <Pressable
-                    onPress={() => {
-                      if (workouts) {
-                        saveData([
-                          ...workouts.filter(
-                            (workout) => workout.id !== item.id
-                          ),
-                        ]);
-                      }
-                    }}
-                    style={({ pressed }) => ({
-                      opacity: pressed ? 0.5 : 1,
-                    })}
-                  >
-                    <FontAwesome
-                      name="times"
-                      size={25}
-                      style={{ marginRight: 15 }}
-                      color={Colors[colorScheme].text}
-                    />
-                  </Pressable>
-
-                  <Pressable
-                    onPress={() => {
-                      navigate("EditWorkout", { workout: item });
-                    }}
+                    onPress={() => {}}
                     style={({ pressed }) => ({
                       opacity: pressed ? 0.5 : 1,
                     })}
@@ -112,9 +65,7 @@ export const WorkoutsScreen = () => {
                     />
                   </Pressable>
                   <Pressable
-                    onPress={() => {
-                      navigate("WorkoutProgress", { workout: item });
-                    }}
+                    onPress={() => {}}
                     style={({ pressed }) => ({
                       opacity: pressed ? 0.5 : 1,
                     })}
