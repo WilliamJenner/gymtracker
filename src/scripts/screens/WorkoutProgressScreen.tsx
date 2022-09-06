@@ -3,7 +3,7 @@ import { StorageKeys } from "@constants/StorageKeys";
 import { Activity, RootStackParamList } from "@customTypes/index";
 import { FontAwesome } from "@expo/vector-icons";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
-import useActivity from "@hooks/query/useActivity";
+import useActivites from "@hooks/query/useActivitIes";
 import useColorScheme from "@hooks/useColorScheme";
 import useIntensity from "@hooks/useIntensity";
 import useWorkoutProgress from "@hooks/useWorkoutProgress";
@@ -22,8 +22,8 @@ const WorkoutProgressScreen = ({
 }: IWorkoutProgressScreenProps) => {
   const { workout } = route.params;
 
-  const { activity } = useActivity();
-  const { getData } = useFirebaseFirestore<Activity>({
+  const { activities: activity } = useActivites();
+  const { getData: getData } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
   });
 

@@ -38,7 +38,7 @@ const WorkoutForm = ({
     collectionKey: StorageKeys.Exercises,
   });
 
-  const { getData } = useFirebaseFirestore<Activity>({
+  const { getData: getData } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
   });
 

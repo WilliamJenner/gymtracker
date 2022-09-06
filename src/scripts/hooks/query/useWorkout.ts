@@ -8,10 +8,13 @@ interface IUseWorkout {
 }
 
 const useWorkout = (): IUseWorkout => {
-  const { getData } = useFirebaseFirestore<Workout>({
+  const { getData: getData } = useFirebaseFirestore<Workout>({
     collectionKey: StorageKeys.Workouts,
   });
-  const workout = useQuery<Array<Workout>, Error>(["workout"], getData);
+  const workout = useQuery<Array<Workout>, Error>(
+    [StorageKeys.Workouts],
+    getData
+  );
 
   return {
     workouts: workout,

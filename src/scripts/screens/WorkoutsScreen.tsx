@@ -1,4 +1,3 @@
-import useActivity from "@hooks/query/useActivity";
 import useWorkout from "@hooks/query/useWorkout";
 import useColorScheme from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
@@ -12,7 +11,7 @@ export const WorkoutsScreen = () => {
 
   const { workouts } = useWorkout();
 
-  const { activity } = useActivity();
+  console.log(workouts.data);
 
   const colorScheme = useColorScheme();
 

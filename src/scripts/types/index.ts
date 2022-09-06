@@ -21,22 +21,20 @@ export type Activity = StorageMetadata & {
 };
 
 export type Exercise = StorageMetadata & {
-  activityId: string;
+  activity: DocumentReference<Activity>;
   reps: number;
   intensity: number;
   restTime: number;
 };
 
 export type GymSet = StorageMetadata & {
-  exerciseId: string;
+  exercise: DocumentReference<Exercise>;
   reps: number;
 };
 
 export type Workout = StorageMetadata & {
-  sets: Array<GymSet>;
+  sets: Array<DocumentReference<GymSet>>;
   name: string;
-  date?: Date;
-  length?: number;
 };
 
 /**
@@ -50,6 +48,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { DocumentReference } from "firebase/firestore";
 
 declare global {
   namespace ReactNavigation {

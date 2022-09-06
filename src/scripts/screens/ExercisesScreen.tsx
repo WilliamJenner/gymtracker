@@ -12,7 +12,7 @@ export default function ExercisesScreen({}) {
 
   //   const { exercise: exercises } = useActivity();
 
-  const { getData } = useFirebaseFirestore<Activity>({
+  const { getData: getData } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
   });
 

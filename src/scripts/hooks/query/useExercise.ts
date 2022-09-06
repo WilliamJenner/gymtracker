@@ -1,23 +1,40 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Exercise } from "@customTypes/index";
+import { Activity, Exercise } from "@customTypes/index";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
+type ExerciseAndActivity = {
+  exercise: Exercise;
+  activity: Activity;
+};
+
 interface IUseExercise {
-  exercises: UseQueryResult<Array<Exercise>, Error>;
+  exercisesAndActivities: UseQueryResult<Array<ExerciseAndActivity>, Error>;
 }
 
 const useExercise = (): IUseExercise => {
-  const { getData } = useFirebaseFirestore<Exercise>({
+  const { getData: getData, getDocument } = useFirebaseFirestore<Exercise>({
     collectionKey: StorageKeys.Exercises,
   });
-  const exercises = useQuery<Array<Exercise>, Error>(
+
+  const exercisesAndActivities = useQuery<Array<ExerciseAndActivity>, Error>(
     [StorageKeys.Exercises],
-    getData
+    async () => {
+      const data = await getData();
+
+      const exerciseAndActivity = data.map(async (d) => {
+        return {
+          exercise: d,
+          activity: await getDocument<Activity>(d.activity),
+        };
+      });
+
+      return await Promise.all(exerciseAndActivity);
+    }
   );
 
   return {
-    exercises,
+    exercisesAndActivities,
   };
 };
 

@@ -1,5 +1,6 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {
+  Auth,
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
@@ -19,6 +20,7 @@ export type IdentityProviderFunction = (data: IdentityProviderData) => void;
 interface IUseFirebaseAuth {
   app: FirebaseApp;
   isLoggedIn: boolean;
+  auth: Auth;
   createAccount: IdentityProviderFunction;
   logIn: IdentityProviderFunction;
   signOutOfApp: () => void;
@@ -68,6 +70,7 @@ const useFirebaseAuth = (): IUseFirebaseAuth => {
   return {
     app,
     isLoggedIn,
+    auth,
     createAccount,
     logIn,
     signOutOfApp,

@@ -3,6 +3,7 @@ import { StorageMetadata } from "@customTypes/index";
 import {
   collection,
   doc,
+  DocumentData,
   DocumentReference,
   getDoc,
   getDocs,
@@ -35,18 +36,26 @@ interface IUseFirebaseFirestore<TData extends StorageMetadata> {
   getData: () => Promise<TData[]>;
   saveData: (data: TData) => Promise<void>;
   updateData: (data: TData) => Promise<void>;
-  getDocument: (document: DocumentReference) => Promise<TData>;
+  getDocument: <TDoc extends DocumentData>(
+    document: DocumentReference<TDoc>
+  ) => Promise<TDoc>;
 }
 
 export const useFirebaseFirestore = <TData extends StorageMetadata>({
   collectionKey,
 }: IUseFirebaseFirestoreParams): IUseFirebaseFirestore<TData> => {
-  const { app, isLoggedIn } = FirebaseAuthContainer.useContainer();
+  const { app, auth } = FirebaseAuthContainer.useContainer();
   const firestore = getFirestore(app);
   const ref = collection(firestore, collectionKey);
 
+  // sets user id of data to current user
+  const processData = (data: TData) => {
+    data.userId = auth.currentUser?.uid ?? "ERRORNOUID";
+    return data;
+  };
+
   const getData = async (): Promise<TData[]> => {
-    const q = query(ref);
+    const q = query(ref, where("userId", "==", auth.currentUser?.uid));
     const docs = await getDocs(q);
     const data = docs.docs.map((d) => {
       return { id: d.id, ...d.data() } as TData;
@@ -55,6 +64,7 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
   };
 
   const saveData = async (data: TData): Promise<void> => {
+    data = processData(data);
     return await setDoc(doc(firestore, collectionKey), data);
   };
 
@@ -65,13 +75,15 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     return await updateDoc(document, data);
   };
 
-  const getDocument = async (document: DocumentReference): Promise<TData> => {
+  const getDocument = async <TDoc extends DocumentData>(
+    document: DocumentReference<TDoc>
+  ): Promise<TDoc> => {
     const doc = await getDoc(document);
-    return doc.data() as TData;
+    return doc.data() as TDoc;
   };
 
   return {
-    getData,
+    getData: getData,
     saveData,
     updateData,
     getDocument,
