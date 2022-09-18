@@ -17,8 +17,6 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AddActivityScreen from "@screens/Form/Activity/AddActivityScreen";
-import { EditActivityScreen } from "@screens/Form/Activity/EditActivityScreen";
 import { AddExerciseScreen } from "@screens/Form/Exercise/AddExerciseScreen";
 import { EditExerciseScreen } from "@screens/Form/Exercise/EditExerciseScreen";
 import AddWorkoutScreen from "@screens/Form/Workout/AddWorkoutScreen";
@@ -30,7 +28,6 @@ import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import ActivitesScreen from "../screens/ActivitesScreen";
 import ExercisesScreen from "../screens/ExercisesScreen";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
@@ -77,16 +74,6 @@ function RootNavigator() {
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
-        <Stack.Screen
-          name="AddActivity"
-          component={AddActivityScreen}
-          options={{ title: "Add Activity" }}
-        />
-        <Stack.Screen
-          name="EditActivity"
-          component={EditActivityScreen}
-          options={{ title: "Edit Activity" }}
-        />
 
         <Stack.Screen
           name="AddExercise"
@@ -141,31 +128,6 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"User">) => ({
           title: "User",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
-        })}
-      />
-      <BottomTab.Screen
-        name="Activites"
-        component={ActivitesScreen}
-        options={({ navigation }: RootTabScreenProps<"Activites">) => ({
-          title: "Activites",
-          tabBarIcon: ({ color }) => <TabBarIcon name="cogs" color={color} />,
-          headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
-              <Pressable
-                onPress={() => navigation.navigate("AddActivity")}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
-              >
-                <FontAwesome
-                  name="plus-circle"
-                  size={25}
-                  color={Colors[colorScheme].text}
-                  style={{ marginRight: 15 }}
-                />
-              </Pressable>
-            </View>
-          ),
         })}
       />
 

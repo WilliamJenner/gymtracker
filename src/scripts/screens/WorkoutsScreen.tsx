@@ -11,8 +11,6 @@ export const WorkoutsScreen = () => {
 
   const { workouts } = useWorkout();
 
-  console.log(workouts.data);
-
   const colorScheme = useColorScheme();
 
   return (

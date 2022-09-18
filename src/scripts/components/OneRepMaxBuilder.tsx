@@ -28,7 +28,7 @@ export default function OneRepMaxBuilder({ onSubmit }: IOneRepMaxBuilderProps) {
     },
   });
 
-  const { getData: activites } = useFirebaseFirestore<Activity>({
+  const { getDataWithId: activites } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
   });
 

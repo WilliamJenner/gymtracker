@@ -1,42 +1,21 @@
+import ExerciseTile from "@components/form/Exercise/ExerciseTile";
 import { View } from "@components/Themed";
-import { StorageKeys } from "@constants/StorageKeys";
-import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
-import useIntensity from "@hooks/useIntensity";
-import { useNavigation } from "@react-navigation/native";
+import useActivites from "@hooks/query/useActivitIes";
+import useExercise from "@hooks/query/useExercise";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { Activity } from "../types/index";
 
 export default function ExercisesScreen({}) {
-  const { navigate } = useNavigation();
-
-  //   const { exercise: exercises } = useActivity();
-
-  const { getData: getData } = useFirebaseFirestore<Activity>({
-    collectionKey: StorageKeys.Activites,
-  });
-
-  const { getWeightToLift } = useIntensity();
+  const { exercise } = useExercise();
+  const {} = useActivites({});
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
-          {/* {exercises.data?.map((exercise) => {
-            return (
-              <View key={exercise.id}>
-                <Text>{exercise.reps} reps</Text>
-                <Text>{exercise.restTime} second rest</Text>
-                <Button
-                  title={"Edit"}
-                  onPress={() => {
-                    navigate("EditExercise", { exercise });
-                  }}
-                />
-                <Button title={"DELETE"} onPress={() => {}} />
-              </View>
-            );
-          })} */}
+          {exercise?.data?.map((e) => {
+            return <ExerciseTile exercise={e} key={e.id} />;
+          })}
         </View>
       </View>
     </ScrollView>

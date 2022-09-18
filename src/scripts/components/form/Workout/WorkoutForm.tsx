@@ -1,22 +1,21 @@
 import Colors from "@constants/Colors";
-import { StorageKeys } from "@constants/StorageKeys";
 import { FontAwesome } from "@expo/vector-icons";
-import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
+import useExercise from "@hooks/query/useExercise";
 import useColorScheme from "@hooks/useColorScheme";
 import useUuid from "@hooks/useUuid";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button, FlatList, Pressable, StyleSheet } from "react-native";
-import { Activity, Exercise, Workout } from "../../../types/index";
+import { WorkoutDto } from "../../../types/index";
 import { Text, View, ViewProps } from "../../Themed";
 import { ThemedTextField } from "../Common/ThemedFormFields";
 import SetsForm from "./SetsForm";
 
 interface IWorkoutFormProps {
-  onSubmit: SubmitHandler<Workout>;
+  onSubmit: SubmitHandler<WorkoutDto>;
   viewProps?: ViewProps;
-  defaultValues: Workout;
+  defaultValues: WorkoutDto;
 }
 
 const WorkoutForm = ({
@@ -30,17 +29,11 @@ const WorkoutForm = ({
     setValue,
     watch,
     formState: { errors },
-  } = useForm<Workout>({
+  } = useForm<WorkoutDto>({
     defaultValues: defaultValues,
   });
 
-  const { getData: exercises } = useFirebaseFirestore<Exercise>({
-    collectionKey: StorageKeys.Exercises,
-  });
-
-  const { getData: getData } = useFirebaseFirestore<Activity>({
-    collectionKey: StorageKeys.Activites,
-  });
+  const { exercisesAndActivities } = useExercise();
 
   const { generate } = useUuid();
 

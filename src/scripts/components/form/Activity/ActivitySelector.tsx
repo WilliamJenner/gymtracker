@@ -1,50 +1,49 @@
 import { Activity } from "@customTypes/index";
+import { Picker } from "@react-native-picker/picker";
 import React from "react";
-import { FlatList, Pressable, StyleProp, ViewStyle } from "react-native";
-import { Text, View } from "../../Themed";
+import { StyleSheet } from "react-native";
 
 interface IActivitySelectorProps {
   activites?: Array<Activity>;
-  selectedActivity?: Activity;
-  cardStyle?: (pressed: boolean, pressedItem: Activity) => StyleProp<ViewStyle>;
-  onPress?: (pressedItem: Activity) => void;
+  selectedActivityId?: string;
+  onValueChange: (activityId: string) => void;
 }
 
 const ActivitySelector = ({
   activites,
-  selectedActivity,
-  cardStyle,
-  onPress,
+  selectedActivityId,
+  onValueChange,
 }: IActivitySelectorProps) => {
+  // if there is only one activity auto select it
+  React.useEffect(() => {
+    if (activites && activites.length === 1) {
+      onValueChange(activites[0].id);
+    }
+  }, [activites]);
+
   return (
-    <FlatList
-      data={activites}
-      horizontal={true}
-      renderItem={({ item }: { item: Activity }) => {
+    <Picker
+      selectedValue={selectedActivityId}
+      onValueChange={(itemValue, itemIndex) => onValueChange(itemValue)}
+      style={styles.picker}
+    >
+      {activites?.map((activity) => {
         return (
-          <Pressable
-            onPress={() => {
-              onPress && onPress(item);
-            }}
-          >
-            {({ pressed }) => {
-              return (
-                <View style={cardStyle && cardStyle(pressed, item)}>
-                  <Text>{item.name}</Text>
-                  <Text>{item.description}</Text>
-                  <Text>{item.muscleGroup}</Text>
-                  <Text>{item.oneRepMax} ORM (kg)</Text>
-                </View>
-              );
-            }}
-          </Pressable>
+          <Picker.Item
+            key={activity.id}
+            label={`${activity.name}, ${activity.muscleGroup}`}
+            value={activity.id}
+          />
         );
-      }}
-      keyExtractor={(item: Activity) =>
-        item.name + item.description + item.muscleGroup
-      }
-    />
+      })}
+    </Picker>
   );
 };
+
+const styles = StyleSheet.create({
+  picker: {
+    backgroundColor: "white",
+  },
+});
 
 export default ActivitySelector;

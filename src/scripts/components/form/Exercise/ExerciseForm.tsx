@@ -1,18 +1,17 @@
-import { StorageKeys } from "@constants/StorageKeys";
-import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
+import useActivites from "@hooks/query/useActivitIes";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
-import { Activity, Exercise } from "../../../types/index";
+import { ExerciseDto } from "../../../types/index";
 import { View, ViewProps } from "../../Themed";
 import ActivitySelector from "../Activity/ActivitySelector";
 import { ThemedTextField } from "../Common/ThemedFormFields";
 
 interface IExerciseBuilderProps {
-  onSubmit: SubmitHandler<Exercise>;
+  onSubmit: SubmitHandler<ExerciseDto>;
   viewProps?: ViewProps;
-  defaultValues: Exercise;
+  defaultValues: ExerciseDto;
 }
 
 const ExerciseForm = ({
@@ -26,41 +25,39 @@ const ExerciseForm = ({
     setValue,
     watch,
     formState: { errors },
-  } = useForm<Exercise>({
+  } = useForm<ExerciseDto>({
     defaultValues: defaultValues,
   });
 
-  const { getData: activites } = useFirebaseFirestore<Activity>({
-    collectionKey: StorageKeys.Activites,
-  });
+  const { activities } = useActivites({});
+
+  const getSelectedActivity = React.useCallback(
+    (activityId?: string) => {
+      return activities?.data?.find((a) => a.id === activityId);
+    },
+    [activities.data]
+  );
 
   return (
     <View style={styles.container} {...viewProps}>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur } }) => (
-          <ActivitySelector
-            activites={activites}
-            selectedActivity={activites?.find(
-              (activty) => activty.id === watchActivity
-            )}
-            cardStyle={(pressed, pressedItem) => {
-              return {
-                backgroundColor: pressed
-                  ? "green"
-                  : watchActivity === pressedItem.id
-                  ? "red"
-                  : "blue",
-                ...styles.activityCard,
-              };
-            }}
-            onPress={(pressedItem) => {
-              setValue("activityId", pressedItem.id);
-            }}
-          />
-        )}
-        name="activityId"
-      />
+      <View style={styles.componentContainer}>
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <ActivitySelector
+              activites={activities.data}
+              selectedActivityId={value?.id}
+              onValueChange={(activityId: string) => {
+                const selectedActivity = getSelectedActivity(activityId);
+                if (selectedActivity) {
+                  onChange(selectedActivity);
+                }
+              }}
+            />
+          )}
+          name="activity"
+        />
+      </View>
 
       <Controller
         control={control}
@@ -169,6 +166,10 @@ const styles = StyleSheet.create({
   button: {
     margin: 12,
     borderWidth: 1,
+  },
+  componentContainer: {
+    width: "100%",
+    padding: 10,
   },
 });
 

@@ -11,7 +11,7 @@ import { Workout } from "../../../types/index";
 
 export default function AddWorkoutScreen() {
   const navigation = useNavigation();
-  const { getData: workouts, saveData: saveWorkout } =
+  const { getDataWithId: workouts, saveData: saveWorkout } =
     useFirebaseFirestore<Workout>({
       collectionKey: StorageKeys.Workouts,
     });

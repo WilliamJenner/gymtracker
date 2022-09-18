@@ -1,44 +1,22 @@
-import UserNamePasswordForm from "@components/form/UserNamePassword/UserNamePasswordForm";
+import LoggedInUser from "@components/user/LoggedInUser";
+import LoggedOutUser from "@components/user/LoggedOutUser";
 import { FirebaseAuthContainer } from "@hooks/firebase/useFirebaseAuth";
 import React from "react";
-import { Button, StyleSheet, TouchableOpacity } from "react-native";
-import { Text, View } from "../components/Themed";
+import { StyleSheet } from "react-native";
+import { View } from "../components/Themed";
 import { RootStackScreenProps } from "../types";
 
 export default function UserScreen({
   navigation,
 }: RootStackScreenProps<"User">) {
-  const { isLoggedIn, logIn, signOutOfApp } =
-    FirebaseAuthContainer.useContainer();
+  const { isLoggedIn } = FirebaseAuthContainer.useContainer();
 
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>hi</Text>
         <View style={{ width: "100%", height: 100 }}>
-          {!isLoggedIn && (
-            <UserNamePasswordForm
-              onSubmit={(data) => {
-                logIn({ username: data.username, password: data.password });
-              }}
-              defaultValues={{
-                username: "",
-                password: "",
-              }}
-            />
-          )}
-          {isLoggedIn && (
-            <Button
-              title={"Log out"}
-              onPress={() => {
-                signOutOfApp();
-              }}
-            ></Button>
-          )}
+          {isLoggedIn ? <LoggedInUser /> : <LoggedOutUser />}
         </View>
-        <TouchableOpacity onPress={() => {}} style={styles.link}>
-          <Text style={styles.linkText}>Store</Text>
-        </TouchableOpacity>
       </View>
     </>
   );

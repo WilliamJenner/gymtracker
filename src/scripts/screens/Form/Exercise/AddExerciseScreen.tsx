@@ -1,22 +1,15 @@
 import ExerciseForm from "@components/form/Exercise/ExerciseForm";
 import { View } from "@components/Themed";
-import { StorageKeys } from "@constants/StorageKeys";
-import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
-import useUuid from "@hooks/useUuid";
+import useExercise from "@hooks/query/useExercise";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { Exercise } from "../../../types/index";
 
 export const AddExerciseScreen = () => {
   const navigation = useNavigation();
-  const { getData: getExercises, saveData: saveExercises } =
-    useFirebaseFirestore<Exercise>({
-      collectionKey: StorageKeys.Exercises,
-    });
 
-  const { generate } = useUuid();
+  const { saveExercise } = useExercise();
 
   return (
     <View style={styles.container}>
@@ -24,15 +17,19 @@ export const AddExerciseScreen = () => {
 
       <ExerciseForm
         onSubmit={(data) => {
-          data.id = generate();
-
-          saveExercises(data);
-
-          navigation.goBack();
+          saveExercise.mutate(data, {
+            onSuccess: (data, variables, context) => {
+              console.log("success");
+              console.log(context);
+              navigation.goBack();
+            },
+            onError: (error) => {
+              console.log(error);
+            },
+          });
         }}
         defaultValues={{
-          id: "",
-          activityId: "",
+          activity: undefined,
           intensity: 10,
           reps: 1,
           restTime: 90,

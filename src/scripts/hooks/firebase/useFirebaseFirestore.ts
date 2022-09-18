@@ -1,7 +1,9 @@
 import { StorageKeys } from "@constants/StorageKeys";
 import { StorageMetadata } from "@customTypes/index";
+import useUuid from "@hooks/useUuid";
 import {
   collection,
+  deleteDoc,
   doc,
   DocumentData,
   DocumentReference,
@@ -20,33 +22,30 @@ interface IUseFirebaseFirestoreParams {
 }
 
 interface IUseFirebaseFirestore<TData extends StorageMetadata> {
-  // data?: Array<TData>;
-  // //   getData: () => Promise<TData[] | null>;
-  // saveData: (value: Array<TData>) => Promise<void>;
-  // //   removeData: (key: Array<string>) => Promise<void>;
-  // editData: (
-  //   value: TData,
-  //   predicate: (
-  //     value: TData,
-  //     index: number,
-  //     obj: TData[]
-  //   ) => boolean | undefined
-  // ) => void;
-  // findData: (id: string) => TData | undefined;
+  getDataWithId: () => Promise<TData[]>;
   getData: () => Promise<TData[]>;
   saveData: (data: TData) => Promise<void>;
   updateData: (data: TData) => Promise<void>;
   getDocument: <TDoc extends DocumentData>(
     document: DocumentReference<TDoc>
   ) => Promise<TDoc>;
+  getDocumentRef: (data: TData) => DocumentReference<TData>;
+  deleteData: (data: TData) => Promise<void>;
 }
 
 export const useFirebaseFirestore = <TData extends StorageMetadata>({
   collectionKey,
 }: IUseFirebaseFirestoreParams): IUseFirebaseFirestore<TData> => {
   const { app, auth } = FirebaseAuthContainer.useContainer();
+  const { generate } = useUuid();
+
   const firestore = getFirestore(app);
   const ref = collection(firestore, collectionKey);
+
+  const queryForDoc = async <TData extends StorageMetadata>(data: TData) => {
+    const document = getDoc(doc(ref, data.id));
+    return document;
+  };
 
   // sets user id of data to current user
   const processData = (data: TData) => {
@@ -54,7 +53,7 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     return data;
   };
 
-  const getData = async (): Promise<TData[]> => {
+  const getDataWithId = async (): Promise<TData[]> => {
     const q = query(ref, where("userId", "==", auth.currentUser?.uid));
     const docs = await getDocs(q);
     const data = docs.docs.map((d) => {
@@ -63,16 +62,30 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     return data;
   };
 
+  const getData = async (): Promise<TData[]> => {
+    const q = query(ref);
+    const docs = await getDocs(q);
+    const data = docs.docs.map((d) => {
+      return { id: d.id, ...d.data() } as TData;
+    });
+
+    return data;
+  };
+
   const saveData = async (data: TData): Promise<void> => {
     data = processData(data);
-    return await setDoc(doc(firestore, collectionKey), data);
+    const id = data.id ? data.id : generate();
+    setDoc(doc(firestore, collectionKey, id), data);
   };
 
   const updateData = async (data: TData): Promise<void> => {
-    const q = query(ref, where("id", "==", data.id));
-    const docs = await getDocs(q);
-    const document = docs.docs[0].ref;
-    return await updateDoc(document, data);
+    const document = await queryForDoc<TData>(data);
+    updateDoc(document.ref, data);
+  };
+
+  const deleteData = async (data: TData): Promise<void> => {
+    const document = await queryForDoc<TData>(data);
+    deleteDoc(document.ref);
   };
 
   const getDocument = async <TDoc extends DocumentData>(
@@ -82,10 +95,18 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     return doc.data() as TDoc;
   };
 
+  const getDocumentRef = (data: TData): DocumentReference<TData> => {
+    const docRef = doc(firestore, collectionKey, data.id ?? "");
+    return docRef as DocumentReference<TData>;
+  };
+
   return {
-    getData: getData,
+    getDataWithId,
+    getData,
     saveData,
     updateData,
     getDocument,
+    getDocumentRef,
+    deleteData,
   };
 };

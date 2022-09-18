@@ -15,7 +15,7 @@ export const EditExerciseScreen = ({
   route,
   navigation,
 }: EditActivityScreenProps) => {
-  const { getData: getData, saveData } = useFirebaseFirestore<Exercise>({
+  const { getDataWithId: getData, saveData } = useFirebaseFirestore<Exercise>({
     collectionKey: StorageKeys.Exercises,
   });
 

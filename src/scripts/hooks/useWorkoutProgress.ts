@@ -1,9 +1,12 @@
+import { StorageKeys } from "@constants/StorageKeys";
 import { GymSet, Workout } from "@customTypes/index";
+import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
+import { useFirebaseFirestore } from "./firebase/useFirebaseFirestore";
 import { useInterval } from "./useInterval";
 
 interface IUseWorkoutProgress {
-  currentSet: GymSet;
+  currentSet?: GymSet;
   timeRested: number;
   resting: boolean;
   setsDone: number;
@@ -43,7 +46,28 @@ const useWorkoutProgress = ({
     }
   }, 1000);
 
-  const currentSet = workout.sets[currentSetIndex];
+  const { getDocument } = useFirebaseFirestore<GymSet>({
+    collectionKey: StorageKeys.GymSet,
+  });
+
+  // const [currentSet, setCurrentSet] = React.useState<GymSet>();
+
+  // React.useEffect(() => {}, )
+
+  // const currentSet = workout.sets[currentSetIndex];
+
+  // const currentSet = React.useMemo(() => {
+  //   const ref = workout.sets[currentSetIndex];
+  //   return getDocument(ref);
+  // }, [currentSetIndex]);
+
+  const { data: currentSet } = useQuery<GymSet, Error>(
+    [StorageKeys.GymSet, currentSetIndex],
+    ({ queryKey }) => {
+      const ref = workout.sets[currentSetIndex];
+      return getDocument(ref);
+    }
+  );
 
   const nextExercise = () => {
     setCurrentSetIndex(
@@ -61,7 +85,7 @@ const useWorkoutProgress = ({
   };
 
   const nextSet = () => {
-    setSetsDone(setsDone < currentSet?.reps ? setsDone + 1 : setsDone); // increment, unless that brings us above steps
+    setSetsDone(setsDone < Number(currentSet?.reps) ? setsDone + 1 : setsDone); // increment, unless that brings us above steps
   };
 
   const previousSet = () => {

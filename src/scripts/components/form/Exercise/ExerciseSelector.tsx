@@ -12,7 +12,7 @@ interface IExerciseSelectorProps {
   onPress?: (pressedItem: Exercise) => void;
 }
 
-const ActivitySelector = ({
+const ExerciseSelector = ({
   exercises,
   selectedActivity,
   cardStyle,
@@ -44,4 +44,4 @@ const ActivitySelector = ({
   );
 };
 
-export default ActivitySelector;
+export default ExerciseSelector;

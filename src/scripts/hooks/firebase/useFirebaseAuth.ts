@@ -32,8 +32,24 @@ const useFirebaseAuth = (): IUseFirebaseAuth => {
     [firebaseConfig]
   );
 
-  const auth = getAuth(app);
-  const isLoggedIn = !!getAuth(app).currentUser;
+  const [auth, setAuth] = React.useState<Auth>(getAuth(app));
+  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
+
+  const handleAuth = React.useCallback(() => {
+    setAuth(getAuth(app));
+  }, [getAuth, app]);
+
+  const handleIsLoggedIn = React.useCallback(() => {
+    setIsLoggedIn(!!auth?.currentUser);
+  }, [auth]);
+
+  React.useEffect(() => {
+    handleAuth();
+  }, [app]);
+
+  React.useEffect(() => {
+    handleIsLoggedIn();
+  }, [auth]);
 
   // Create a firebase account
   const createAccount = ({ username, password }: IdentityProviderData) => {
@@ -49,7 +65,10 @@ const useFirebaseAuth = (): IUseFirebaseAuth => {
   // Log in to an existing firebase account
   const logIn = ({ username, password }: IdentityProviderData) => {
     signInWithEmailAndPassword(auth, username, password)
-      .then((userCredential) => {})
+      .then((userCredential) => {
+        handleAuth();
+        handleIsLoggedIn();
+      })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -59,7 +78,10 @@ const useFirebaseAuth = (): IUseFirebaseAuth => {
 
   const signOutOfApp = () => {
     signOut(auth)
-      .then((userCredential) => {})
+      .then((userCredential) => {
+        handleAuth();
+        handleIsLoggedIn();
+      })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;

@@ -23,7 +23,7 @@ const WorkoutProgressScreen = ({
   const { workout } = route.params;
 
   const { activities: activity } = useActivites();
-  const { getData: getData } = useFirebaseFirestore<Activity>({
+  const { getDataWithId: getData } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
   });
 

@@ -1,8 +1,8 @@
 export type AppTheme = "light" | "dark";
 
 export type StorageMetadata = {
-  id: string;
-  userId: string;
+  id?: string;
+  userId?: string;
 };
 
 export enum MuscleGroup {
@@ -17,19 +17,36 @@ export type Activity = StorageMetadata & {
   name: string;
   description: string;
   muscleGroup: MuscleGroup;
-  oneRepMax: number;
 };
 
-export type Exercise = StorageMetadata & {
-  activity: DocumentReference<Activity>;
+export type ExerciseDto = {
+  activity?: Activity;
+  id?: string;
   reps: number;
   intensity: number;
   restTime: number;
 };
 
+export type Exercise = StorageMetadata & {
+  activity: DocumentReference<Activity> | string;
+  reps: number;
+  intensity: number;
+  restTime: number;
+};
+
+export type GymSetDto = {
+  exercise: ExerciseDto;
+  reps: number;
+};
+
 export type GymSet = StorageMetadata & {
   exercise: DocumentReference<Exercise>;
   reps: number;
+};
+
+export type WorkoutDto = {
+  sets: Array<GymSetDto>;
+  name: string;
 };
 
 export type Workout = StorageMetadata & {

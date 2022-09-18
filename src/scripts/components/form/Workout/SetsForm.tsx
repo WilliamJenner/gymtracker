@@ -4,15 +4,15 @@ import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
-import { Exercise, GymSet } from "../../../types/index";
+import { Exercise, GymSetDto } from "../../../types/index";
 import { View, ViewProps } from "../../Themed";
 import { ThemedTextField } from "../Common/ThemedFormFields";
 import ExerciseSelector from "../Exercise/ExerciseSelector";
 
 interface ISetsFormProps {
-  onSubmit: SubmitHandler<GymSet>;
+  onSubmit: SubmitHandler<GymSetDto>;
   viewProps?: ViewProps;
-  defaultValues: GymSet;
+  defaultValues: GymSetDto;
 }
 
 const SetsForm = ({ onSubmit, viewProps, defaultValues }: ISetsFormProps) => {
@@ -22,11 +22,11 @@ const SetsForm = ({ onSubmit, viewProps, defaultValues }: ISetsFormProps) => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<GymSet>({
+  } = useForm<GymSetDto>({
     defaultValues: defaultValues,
   });
 
-  const { getData: exercises } = useFirebaseFirestore<Exercise>({
+  const { getDataWithId: exercises } = useFirebaseFirestore<Exercise>({
     collectionKey: StorageKeys.Exercises,
   });
 

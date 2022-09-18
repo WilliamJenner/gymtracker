@@ -6,7 +6,7 @@ import * as React from "react";
 import { Button, ScrollView, View } from "react-native";
 
 const Activites = () => {
-  const { getData: getData, saveData } = useFirebaseFirestore<Activity>({
+  const { getDataWithId: getData, saveData } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
   });
 
