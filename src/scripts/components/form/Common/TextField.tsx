@@ -1,6 +1,6 @@
+import { Text, TextProps } from "@components/common/Themed";
 import * as React from "react";
 import { TextInput, TextInputProps, View, ViewProps } from "react-native";
-import { Text, TextProps } from "../../Themed";
 
 export interface ITextFieldProps {
   viewProps?: ViewProps;

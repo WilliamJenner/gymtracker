@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity } from "@customTypes/index";
+import { Activity } from "@customTypes/app-types";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { useNavigation } from "@react-navigation/native";
 import * as React from "react";

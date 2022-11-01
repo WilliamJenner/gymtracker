@@ -1,19 +1,19 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity } from "@customTypes/index";
+import { Activity } from "@customTypes/app-types";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { DocumentReference } from "firebase/firestore";
 
-interface IUseExercise {
+interface IUseActivity {
   activities: UseQueryResult<Array<Activity>, Error>;
   activity: UseQueryResult<Activity, Error>;
 }
 
-interface IUseExerciseParams {
+interface IUseActivitesParams {
   ref?: DocumentReference<Activity>;
 }
 
-const useActivites = (props: IUseExerciseParams): IUseExercise => {
+const useActivites = (props: IUseActivitesParams): IUseActivity => {
   const { getData: getShallowData, getDocument } =
     useFirebaseFirestore<Activity>({
       collectionKey: StorageKeys.Activites,

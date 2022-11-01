@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity, Exercise, ExerciseDto } from "@customTypes/index";
+import { Activity, Exercise, ExerciseDto } from "@customTypes/app-types";
 import { FirebaseAuthContainer } from "@hooks/firebase/useFirebaseAuth";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import {

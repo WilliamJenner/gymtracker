@@ -1,8 +1,10 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {
   Auth,
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
   getAuth,
+  setPersistence,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -36,7 +38,9 @@ const useFirebaseAuth = (): IUseFirebaseAuth => {
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
 
   const handleAuth = React.useCallback(() => {
-    setAuth(getAuth(app));
+    const auth = getAuth(app);
+    setPersistence(auth, browserLocalPersistence);
+    setAuth(auth);
   }, [getAuth, app]);
 
   const handleIsLoggedIn = React.useCallback(() => {

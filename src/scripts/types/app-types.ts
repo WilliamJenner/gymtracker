@@ -36,12 +36,12 @@ export type Exercise = StorageMetadata & {
 
 export type GymSetDto = {
   exercise: ExerciseDto;
-  reps: number;
+  sets: number;
 };
 
 export type GymSet = StorageMetadata & {
   exercise: DocumentReference<Exercise>;
-  reps: number;
+  sets: number;
 };
 
 export type WorkoutDto = {
@@ -52,6 +52,16 @@ export type WorkoutDto = {
 export type Workout = StorageMetadata & {
   sets: Array<DocumentReference<GymSet>>;
   name: string;
+};
+
+export type OneRepMaxDto = {
+  activity: Activity;
+  value: number;
+};
+
+export type OneRepMax = StorageMetadata & {
+  activity: DocumentReference<Activity>;
+  value: number;
 };
 
 /**
@@ -87,6 +97,10 @@ export type RootStackParamList = {
   AddWorkout: undefined;
   EditWorkout: {
     workout: Workout;
+  };
+  AddOneRepMax: undefined;
+  EditOneRepMax: {
+    oneRepMax: OneRepMax;
   };
   Modal: undefined;
   NotFound: undefined;

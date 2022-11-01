@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { GymSet, Workout } from "@customTypes/index";
+import { GymSet, Workout } from "@customTypes/app-types";
 import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 import { useFirebaseFirestore } from "./firebase/useFirebaseFirestore";
@@ -85,7 +85,7 @@ const useWorkoutProgress = ({
   };
 
   const nextSet = () => {
-    setSetsDone(setsDone < Number(currentSet?.reps) ? setsDone + 1 : setsDone); // increment, unless that brings us above steps
+    setSetsDone(setsDone < Number(currentSet?.sets) ? setsDone + 1 : setsDone); // increment, unless that brings us above steps
   };
 
   const previousSet = () => {

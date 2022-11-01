@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { StorageMetadata } from "@customTypes/index";
+import { StorageMetadata } from "@customTypes/app-types";
 import useUuid from "@hooks/useUuid";
 import {
   collection,
@@ -7,6 +7,7 @@ import {
   doc,
   DocumentData,
   DocumentReference,
+  DocumentSnapshot,
   getDoc,
   getDocs,
   getFirestore,
@@ -31,6 +32,9 @@ interface IUseFirebaseFirestore<TData extends StorageMetadata> {
   ) => Promise<TDoc>;
   getDocumentRef: (data: TData) => DocumentReference<TData>;
   deleteData: (data: TData) => Promise<void>;
+  queryForDoc: <TData extends StorageMetadata>(
+    data: TData
+  ) => Promise<DocumentSnapshot<DocumentData>>;
 }
 
 export const useFirebaseFirestore = <TData extends StorageMetadata>({
@@ -108,5 +112,6 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     getDocument,
     getDocumentRef,
     deleteData,
+    queryForDoc,
   };
 };

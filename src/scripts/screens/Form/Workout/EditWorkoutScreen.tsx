@@ -1,12 +1,10 @@
-import WorkoutForm from "@components/form/Workout/WorkoutForm";
-import { View } from "@components/Themed";
-import { StorageKeys } from "@constants/StorageKeys";
-import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
+import { View } from "@components/common/Themed";
+import WorkoutForm from "@components/Workout/WorkoutForm";
+import { MuscleGroup, RootStackParamList } from "@customTypes/app-types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { RootStackParamList, Workout } from "../../../types/index";
 
 interface EditActivityScreenProps
   extends NativeStackScreenProps<RootStackParamList, "EditWorkout"> {}
@@ -15,11 +13,11 @@ export const EditWorkoutScreen = ({
   route,
   navigation,
 }: EditActivityScreenProps) => {
-  const { getDataWithId: getData, saveData } = useFirebaseFirestore<Workout>({
-    collectionKey: StorageKeys.Workouts,
-  });
+  // const { getDataWithId: getData, saveData } = useFirebaseFirestore<Workout>({
+  //   collectionKey: StorageKeys.Workouts,
+  // });
 
-  const { workout } = route.params;
+  // const { workout } = route.params;
 
   return (
     <View style={styles.container}>
@@ -27,11 +25,26 @@ export const EditWorkoutScreen = ({
 
       <WorkoutForm
         onSubmit={(data) => {
-          saveData(data);
-
           navigation.goBack();
         }}
-        defaultValues={workout}
+        defaultValues={{
+          name: "test",
+          sets: [
+            {
+              exercise: {
+                activity: {
+                  name: "test",
+                  description: "",
+                  muscleGroup: MuscleGroup.BACK,
+                },
+                restTime: 90,
+                reps: 1,
+                intensity: 100,
+              },
+              sets: 2,
+            },
+          ],
+        }}
       />
     </View>
   );

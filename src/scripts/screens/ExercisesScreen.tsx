@@ -1,5 +1,5 @@
-import ExerciseTile from "@components/form/Exercise/ExerciseTile";
-import { View } from "@components/Themed";
+import { View } from "@components/common/Themed";
+import ExerciseTile from "@components/Exercise/ExerciseTile";
 import useActivites from "@hooks/query/useActivitIes";
 import useExercise from "@hooks/query/useExercise";
 import React from "react";

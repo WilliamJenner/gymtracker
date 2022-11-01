@@ -1,9 +1,9 @@
+import { View, ViewProps } from "@components/common/Themed";
+import { ThemedTextField } from "@components/form/common/ThemedFormFields";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
-import { View, ViewProps } from "../../Themed";
-import { ThemedTextField } from "../Common/ThemedFormFields";
 
 type UsernamePassword = {
   username: string;

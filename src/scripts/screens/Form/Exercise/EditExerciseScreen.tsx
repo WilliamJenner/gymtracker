@@ -1,12 +1,12 @@
-import ExerciseForm from "@components/form/Exercise/ExerciseForm";
-import { View } from "@components/Themed";
+import { View } from "@components/common/Themed";
+import ExerciseForm from "@components/Exercise/ExerciseForm";
 import { StorageKeys } from "@constants/StorageKeys";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { Exercise, RootStackParamList } from "../../../types/index";
+import { Exercise, RootStackParamList } from "../../../types/app-types";
 
 interface EditActivityScreenProps
   extends NativeStackScreenProps<RootStackParamList, "EditExercise"> {}

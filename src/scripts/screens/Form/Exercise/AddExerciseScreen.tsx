@@ -1,5 +1,5 @@
-import ExerciseForm from "@components/form/Exercise/ExerciseForm";
-import { View } from "@components/Themed";
+import { View } from "@components/common/Themed";
+import ExerciseForm from "@components/Exercise/ExerciseForm";
 import useExercise from "@hooks/query/useExercise";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";

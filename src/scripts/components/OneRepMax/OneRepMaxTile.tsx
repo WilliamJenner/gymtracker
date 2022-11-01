@@ -1,38 +1,39 @@
-import { Text, View } from "@components/Themed";
-import { Activity, Exercise } from "@customTypes/index";
+import { Text, View } from "@components/common/Themed";
+import { Activity, OneRepMax } from "@customTypes/app-types";
 import useActivites from "@hooks/query/useActivitIes";
-import useExercise from "@hooks/query/useExercise";
+import useOneRepMax from "@hooks/query/useOneRepMax";
 import { useNavigation } from "@react-navigation/native";
 import { DocumentReference } from "firebase/firestore";
 import * as React from "react";
 import { Button } from "react-native";
 
-interface IExerciseTitleProps {
-  exercise: Exercise;
+interface IOneRepMaxTileProps {
+  oneRepMax: OneRepMax;
 }
 
-const ExerciseTile = ({ exercise }: IExerciseTitleProps) => {
+const OneRepMaxTile = ({ oneRepMax }: IOneRepMaxTileProps) => {
   const { navigate } = useNavigation();
+
   const { activity } = useActivites({
-    ref: exercise.activity as DocumentReference<Activity>,
+    ref: oneRepMax.activity as DocumentReference<Activity>,
   });
-  const { deleteExercise } = useExercise();
+
+  const { deleteOneRepMax, saveOneRepMax } = useOneRepMax();
 
   return (
-    <View key={exercise.id}>
-      <Text>{exercise.reps} reps</Text>
-      <Text>{exercise.restTime} second rest</Text>
+    <View key={oneRepMax.id}>
+      <Text>{oneRepMax.value}kg</Text>
       <Text>{activity.data?.name}</Text>
       <Button
         title={"Edit"}
         onPress={() => {
-          navigate("EditExercise", { exercise });
+          navigate("EditOneRepMax", { oneRepMax });
         }}
       />
       <Button
         title={"DELETE"}
         onPress={() => {
-          deleteExercise.mutate(exercise, {
+          deleteOneRepMax.mutate(oneRepMax, {
             onSuccess(data, variables, context) {
               console.log("success");
             },
@@ -46,4 +47,4 @@ const ExerciseTile = ({ exercise }: IExerciseTitleProps) => {
   );
 };
 
-export default ExerciseTile;
+export default OneRepMaxTile;

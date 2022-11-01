@@ -3,12 +3,12 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { View } from "@components/Themed";
+import { View } from "@components/common/Themed";
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
-} from "@customTypes/index";
+} from "@customTypes/app-types";
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -19,6 +19,8 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AddExerciseScreen } from "@screens/Form/Exercise/AddExerciseScreen";
 import { EditExerciseScreen } from "@screens/Form/Exercise/EditExerciseScreen";
+import AddOneRepMaxScreen from "@screens/Form/OneRepMax/AddOneRepMaxScreen";
+import EditOneRepMaxScreen from "@screens/Form/OneRepMax/EditOneRepMaxScreen";
 import AddWorkoutScreen from "@screens/Form/Workout/AddWorkoutScreen";
 import { EditWorkoutScreen } from "@screens/Form/Workout/EditWorkoutScreen";
 import UserScreen from "@screens/UserScreen";
@@ -100,6 +102,18 @@ function RootNavigator() {
           name="WorkoutProgress"
           component={WorkoutProgressScreen}
           options={{ title: "Workout" }}
+        />
+
+        <Stack.Screen
+          name="AddOneRepMax"
+          component={AddOneRepMaxScreen}
+          options={{ title: "Add One Rep Max" }}
+        />
+
+        <Stack.Screen
+          name="EditOneRepMax"
+          component={EditOneRepMaxScreen}
+          options={{ title: "Edit One Rep Max" }}
         />
       </Stack.Group>
     </Stack.Navigator>

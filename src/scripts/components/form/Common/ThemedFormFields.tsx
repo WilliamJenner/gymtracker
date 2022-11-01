@@ -1,8 +1,8 @@
-import { Text, useThemeColor, View } from "@components/Themed";
+import { Text, useThemeColor, View } from "@components/common/Themed";
+import TextField, { ITextFieldProps } from "@components/form/common/TextField";
 import { Picker, PickerProps } from "@react-native-picker/picker";
 import React, { PropsWithChildren } from "react";
 import { StyleSheet } from "react-native";
-import TextField, { ITextFieldProps } from "./TextField";
 
 interface IThemedTextField extends ITextFieldProps {
   lightColor?: string;

@@ -1,4 +1,5 @@
-import { Activity } from "@customTypes/index";
+import { TextProps } from "@components/common/Themed";
+import { Activity } from "@customTypes/app-types";
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -7,17 +8,19 @@ interface IActivitySelectorProps {
   activites?: Array<Activity>;
   selectedActivityId?: string;
   onValueChange: (activityId: string) => void;
+  textProps?: TextProps;
 }
 
 const ActivitySelector = ({
   activites,
   selectedActivityId,
   onValueChange,
+  textProps,
 }: IActivitySelectorProps) => {
-  // if there is only one activity auto select it
+  // auto select first activity
   React.useEffect(() => {
-    if (activites && activites.length === 1) {
-      onValueChange(activites[0].id);
+    if (activites && activites.length > 0) {
+      onValueChange(activites[0].id ?? activites[0].name);
     }
   }, [activites]);
 
@@ -25,7 +28,7 @@ const ActivitySelector = ({
     <Picker
       selectedValue={selectedActivityId}
       onValueChange={(itemValue, itemIndex) => onValueChange(itemValue)}
-      style={styles.picker}
+      style={{ ...styles.picker, ...textProps }}
     >
       {activites?.map((activity) => {
         return (

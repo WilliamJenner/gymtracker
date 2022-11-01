@@ -1,12 +1,12 @@
+import ActivitySelector from "@components/Activity/ActivitySelector";
+import { View, ViewProps } from "@components/common/Themed";
+import { ThemedTextField } from "@components/form/common/ThemedFormFields";
+import { ExerciseDto } from "@customTypes/app-types";
 import useActivites from "@hooks/query/useActivitIes";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
-import { ExerciseDto } from "../../../types/index";
-import { View, ViewProps } from "../../Themed";
-import ActivitySelector from "../Activity/ActivitySelector";
-import { ThemedTextField } from "../Common/ThemedFormFields";
 
 interface IExerciseBuilderProps {
   onSubmit: SubmitHandler<ExerciseDto>;
@@ -69,7 +69,7 @@ const ExerciseForm = ({
             labelText={name}
             inputProps={{
               onBlur: onBlur,
-              onChangeText: (text) => {
+              onChangeText: (text: string) => {
                 onChange(Number(text));
               },
               value: value.toString(),
@@ -115,7 +115,7 @@ const ExerciseForm = ({
             labelText={name}
             inputProps={{
               onBlur: onBlur,
-              onChangeText: (text) => {
+              onChangeText: (text: string) => {
                 onChange(Number(text));
               },
               value: value.toString(),

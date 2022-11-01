@@ -1,10 +1,10 @@
+import { Text, View } from "@components/common/Themed";
 import useWorkout from "@hooks/query/useWorkout";
 import useColorScheme from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
 import { java } from "@styles/appStyles";
 import React from "react";
 import { Button, FlatList, ScrollView, StyleSheet } from "react-native";
-import { View } from "../components/Themed";
 
 export const WorkoutsScreen = () => {
   const { navigate } = useNavigation();
@@ -23,9 +23,19 @@ export const WorkoutsScreen = () => {
             data={workouts?.data}
             horizontal={true}
             renderItem={({ item }) => {
-              return <View key={item?.id} style={[styles.workoutCard]}></View>;
+              return (
+                <View key={item?.id} style={[styles.workoutCard]}>
+                  <Text>{item.name}</Text>
+                  <Button
+                    title="edit"
+                    onPress={() => {
+                      navigate("EditWorkout", { workout: item });
+                    }}
+                  />
+                </View>
+              );
             }}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id ?? ""}
           />
         </View>
       </View>
