@@ -23,7 +23,7 @@ module.exports = function (api) {
             "@hooks": "./src/scripts/hooks/",
             "@navigation": "./src/scripts/navigation/",
             "@screens": "./src/scripts/screens/",
-            "@types": "./src/scripts/types/",
+            "@customTypes": "./src/scripts/types/",
             "@utils": "./src/scripts/utils/",
             "@styles": "./src/scripts/styles/",
           },

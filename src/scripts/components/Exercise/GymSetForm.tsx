@@ -1,31 +1,31 @@
 import ActivitySelector from "@components/Activity/ActivitySelector";
 import { View, ViewProps } from "@components/common/Themed";
 import { ThemedTextField } from "@components/form/common/ThemedFormFields";
-import { ExerciseDto } from "@customTypes/";
+import { GymSetDto } from "@customTypes/index";
 import useActivites from "@hooks/query/useActivitIes";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
 
-interface IExerciseBuilderProps {
-  onSubmit: SubmitHandler<ExerciseDto>;
+interface IGymSetFormProps {
+  onSubmit: SubmitHandler<GymSetDto>;
   viewProps?: ViewProps;
-  defaultValues: ExerciseDto;
+  defaultValues: GymSetDto;
 }
 
-const ExerciseForm = ({
+const GymSetForm = ({
   onSubmit,
   viewProps,
   defaultValues,
-}: IExerciseBuilderProps) => {
+}: IGymSetFormProps) => {
   const {
     control,
     handleSubmit,
     setValue,
     watch,
     formState: { errors },
-  } = useForm<ExerciseDto>({
+  } = useForm<GymSetDto>({
     defaultValues: defaultValues,
   });
 
@@ -55,7 +55,7 @@ const ExerciseForm = ({
               }}
             />
           )}
-          name="activity"
+          name="exercise.activity"
         />
       </View>
 
@@ -75,10 +75,32 @@ const ExerciseForm = ({
               value: value.toString(),
               keyboardType: "numeric",
             }}
-            validationLabelText={errors?.reps?.message}
+            validationLabelText={errors?.exercise?.reps?.message}
           />
         )}
-        name="reps"
+        name="exercise.reps"
+      />
+
+      <Controller
+        control={control}
+        rules={{
+          required: { value: true, message: "This is required" },
+        }}
+        render={({ field: { onChange, onBlur, value, name } }) => (
+          <ThemedTextField
+            labelText={name}
+            inputProps={{
+              onBlur: onBlur,
+              onChangeText: (text: string) => {
+                onChange(Number(text));
+              },
+              value: value.toString(),
+              keyboardType: "numeric",
+            }}
+            validationLabelText={errors?.sets?.message}
+          />
+        )}
+        name="sets"
       />
 
       <Controller
@@ -99,10 +121,10 @@ const ExerciseForm = ({
               value: value.toString(),
               keyboardType: "numeric",
             }}
-            validationLabelText={errors?.intensity?.message}
+            validationLabelText={errors?.exercise?.intensity?.message}
           />
         )}
-        name="intensity"
+        name="exercise.intensity"
       />
 
       <Controller
@@ -121,10 +143,10 @@ const ExerciseForm = ({
               value: value.toString(),
               keyboardType: "numeric",
             }}
-            validationLabelText={errors?.restTime?.message}
+            validationLabelText={errors?.exercise?.restTime?.message}
           />
         )}
-        name="restTime"
+        name="exercise.restTime"
       />
 
       <Button
@@ -173,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExerciseForm;
+export default GymSetForm;

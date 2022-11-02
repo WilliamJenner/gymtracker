@@ -1,6 +1,6 @@
 import { View } from "@components/common/Themed";
 import { OneRepMaxForm } from "@components/OneRepMax/OneRepMaxForm";
-import { Activity, OneRepMax } from "@customTypes/app-types";
+import { Activity, OneRepMax } from "@customTypes/index";
 import useOneRepMax from "@hooks/query/useOneRepMax";
 import { useNavigation } from "@react-navigation/native";
 import { DocumentReference } from "firebase/firestore";

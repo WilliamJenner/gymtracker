@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity, Exercise } from "@customTypes/app-types";
+import { Activity, Exercise } from "@customTypes/";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import useIntensity from "@hooks/useIntensity";
 import React from "react";

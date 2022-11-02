@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity, Exercise, ExerciseDto } from "@customTypes/app-types";
+import { Activity, Exercise, ExerciseDto } from "@customTypes/index";
 import { FirebaseAuthContainer } from "@hooks/firebase/useFirebaseAuth";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import {
@@ -10,8 +10,13 @@ import {
 } from "@tanstack/react-query";
 
 interface IUseExercise {
-  exercise: UseQueryResult<Array<Exercise>, Error>;
-  saveExercise: UseMutationResult<void, Error, ExerciseDto, unknown>;
+  exercises: UseQueryResult<Array<Exercise>, Error>;
+  saveExercise: UseMutationResult<
+    string | undefined,
+    unknown,
+    ExerciseDto,
+    unknown
+  >;
   deleteExercise: UseMutationResult<void, Error, Exercise, unknown>;
 }
 
@@ -35,43 +40,43 @@ const useExercise = (): IUseExercise => {
     collectionKey: StorageKeys.Activites,
   });
 
-  const exercise = useQuery<Array<Exercise>, Error>(
+  const exercises = useQuery<Array<Exercise>, Error>(
     [StorageKeys.Exercises],
     getData
   );
 
-  const saveExercise = useMutation<void, Error, ExerciseDto, unknown>(
-    async (exerciseDto) => {
-      if (isLoggedIn && exerciseDto.activity) {
-        const activityRef = getActivityRef(exerciseDto?.activity);
+  const saveExercise = useMutation(async (exerciseDto: ExerciseDto) => {
+    if (isLoggedIn && exerciseDto.activity) {
+      const activityRef = getActivityRef(exerciseDto.activity.id ?? "");
 
-        delete exerciseDto.activity;
+      delete exerciseDto.activity;
 
-        const exerciseDoc: Exercise = {
-          ...exerciseDto,
-          activity: activityRef,
-          userId: auth.currentUser?.uid,
-        };
+      const exerciseDoc: Exercise = {
+        ...exerciseDto,
+        activity: activityRef,
+        userId: auth.currentUser?.uid,
+      };
 
-        await saveData(exerciseDoc);
+      const id = await saveData(exerciseDoc);
 
-        await exercise.refetch();
-      }
+      await exercises.refetch();
+
+      return id;
     }
-  );
+  });
 
   const deleteExercise = useMutation<void, Error, Exercise, unknown>(
     async (exerciseDoc) => {
       if (isLoggedIn) {
         console.log("deleting");
         await deleteData(exerciseDoc);
-        await exercise.refetch();
+        await exercises.refetch();
       }
     }
   );
 
   return {
-    exercise,
+    exercises: exercises,
     saveExercise,
     deleteExercise,
   };

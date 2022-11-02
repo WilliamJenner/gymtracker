@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity } from "@customTypes/app-types";
+import { Activity } from "@customTypes/index";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { DocumentReference } from "firebase/firestore";

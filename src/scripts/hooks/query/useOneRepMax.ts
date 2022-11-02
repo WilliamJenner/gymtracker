@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity, OneRepMax } from "@customTypes/app-types";
+import { Activity, OneRepMax } from "@customTypes/index";
 import { FirebaseAuthContainer } from "@hooks/firebase/useFirebaseAuth";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import {

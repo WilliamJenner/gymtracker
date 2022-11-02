@@ -1,6 +1,6 @@
 import { ViewProps } from "@components/common/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import { Exercise, GymSetDto } from "@customTypes/app-types";
+import { Exercise, GymSetDto } from "@customTypes/";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { white } from "@styles/appStyles";
 import { SubmitHandler, useForm } from "react-hook-form";

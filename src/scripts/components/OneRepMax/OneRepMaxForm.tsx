@@ -1,7 +1,7 @@
 import ActivitySelector from "@components/Activity/ActivitySelector";
 import { Text, View } from "@components/common/Themed";
 import TextField from "@components/form/common/TextField";
-import { OneRepMax, OneRepMaxDto } from "@customTypes/app-types";
+import { OneRepMax, OneRepMaxDto } from "@customTypes/";
 import useActivites from "@hooks/query/useActivitIes";
 import { white } from "@styles/appStyles";
 import React from "react";

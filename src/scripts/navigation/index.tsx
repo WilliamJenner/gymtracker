@@ -8,7 +8,7 @@ import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
-} from "@customTypes/app-types";
+} from "@customTypes/";
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -17,7 +17,7 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { AddExerciseScreen } from "@screens/Form/Exercise/AddExerciseScreen";
+import ActivitesScreen from "@screens/ActivitesScreen";
 import { EditExerciseScreen } from "@screens/Form/Exercise/EditExerciseScreen";
 import AddOneRepMaxScreen from "@screens/Form/OneRepMax/AddOneRepMaxScreen";
 import EditOneRepMaxScreen from "@screens/Form/OneRepMax/EditOneRepMaxScreen";
@@ -77,11 +77,11 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
 
-        <Stack.Screen
-          name="AddExercise"
-          component={AddExerciseScreen}
-          options={{ title: "Add Exercise" }}
-        />
+        {/* <Stack.Screen
+          name="AddOneRepMax"
+          component={AddOneRepMaxScreen}
+          options={{ title: "Add One Rep Max" }}
+        /> */}
         <Stack.Screen
           name="EditExercise"
           component={EditExerciseScreen}
@@ -142,6 +142,34 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"User">) => ({
           title: "User",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+        })}
+      />
+
+      <BottomTab.Screen
+        name="Activites"
+        component={ActivitesScreen}
+        options={({ navigation }: RootTabScreenProps<"Activites">) => ({
+          title: "Activites",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="soccer-ball-o" color={color} />
+          ),
+          headerRight: () => (
+            <View style={{ flexDirection: "row" }}>
+              <Pressable
+                onPress={() => navigation.navigate("AddOneRepMax")}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1,
+                })}
+              >
+                <FontAwesome
+                  name="plus-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            </View>
+          ),
         })}
       />
 

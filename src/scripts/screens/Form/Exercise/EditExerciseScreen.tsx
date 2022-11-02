@@ -6,7 +6,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { Exercise, RootStackParamList } from "../../../types/app-types";
+import { Exercise, RootStackParamList } from "../../../types";
 
 interface EditActivityScreenProps
   extends NativeStackScreenProps<RootStackParamList, "EditExercise"> {}

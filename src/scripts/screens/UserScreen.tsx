@@ -2,7 +2,7 @@ import { Text, View } from "@components/common/Themed";
 import OneRepMaxTile from "@components/OneRepMax/OneRepMaxTile";
 import LoggedInUser from "@components/User/LoggedInUser";
 import LoggedOutUser from "@components/User/LoggedOutUser";
-import { RootStackScreenProps } from "@customTypes/app-types";
+import { RootStackScreenProps } from "@customTypes/";
 import { FirebaseAuthContainer } from "@hooks/firebase/useFirebaseAuth";
 import useOneRepMax from "@hooks/query/useOneRepMax";
 import { useNavigation } from "@react-navigation/native";

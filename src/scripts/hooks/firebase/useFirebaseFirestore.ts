@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { StorageMetadata } from "@customTypes/app-types";
+import { StorageMetadata } from "@customTypes/";
 import useUuid from "@hooks/useUuid";
 import {
   collection,
@@ -25,12 +25,12 @@ interface IUseFirebaseFirestoreParams {
 interface IUseFirebaseFirestore<TData extends StorageMetadata> {
   getDataWithId: () => Promise<TData[]>;
   getData: () => Promise<TData[]>;
-  saveData: (data: TData) => Promise<void>;
+  saveData: (data: TData) => Promise<string>;
   updateData: (data: TData) => Promise<void>;
   getDocument: <TDoc extends DocumentData>(
     document: DocumentReference<TDoc>
   ) => Promise<TDoc>;
-  getDocumentRef: (data: TData) => DocumentReference<TData>;
+  getDocumentRef: (data: string) => DocumentReference<TData>;
   deleteData: (data: TData) => Promise<void>;
   queryForDoc: <TData extends StorageMetadata>(
     data: TData
@@ -76,10 +76,11 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     return data;
   };
 
-  const saveData = async (data: TData): Promise<void> => {
+  const saveData = async (data: TData): Promise<string> => {
     data = processData(data);
     const id = data.id ? data.id : generate();
-    setDoc(doc(firestore, collectionKey, id), data);
+    await setDoc(doc(firestore, collectionKey, id), data);
+    return id.toString();
   };
 
   const updateData = async (data: TData): Promise<void> => {
@@ -99,8 +100,8 @@ export const useFirebaseFirestore = <TData extends StorageMetadata>({
     return doc.data() as TDoc;
   };
 
-  const getDocumentRef = (data: TData): DocumentReference<TData> => {
-    const docRef = doc(firestore, collectionKey, data.id ?? "");
+  const getDocumentRef = (id: string): DocumentReference<TData> => {
+    const docRef = doc(firestore, collectionKey, id);
     return docRef as DocumentReference<TData>;
   };
 

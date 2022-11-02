@@ -1,6 +1,6 @@
 import { View } from "@components/common/Themed";
 import WorkoutForm from "@components/Workout/WorkoutForm";
-import { MuscleGroup, RootStackParamList } from "@customTypes/app-types";
+import { RootStackParamList } from "@customTypes/index";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";

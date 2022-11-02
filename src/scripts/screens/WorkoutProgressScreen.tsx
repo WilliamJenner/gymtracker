@@ -1,6 +1,6 @@
 import { View } from "@components/common/Themed";
 import { StorageKeys } from "@constants/StorageKeys";
-import { Activity, RootStackParamList } from "@customTypes/app-types";
+import { Activity, RootStackParamList } from "@customTypes/";
 import { FontAwesome } from "@expo/vector-icons";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import useActivites from "@hooks/query/useActivitIes";

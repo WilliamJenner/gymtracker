@@ -6,7 +6,7 @@ import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 
 export default function ExercisesScreen({}) {
-  const { exercise } = useExercise();
+  const { exercises: exercise } = useExercise();
   const {} = useActivites({});
 
   return (

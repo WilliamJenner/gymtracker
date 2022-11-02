@@ -1,4 +1,23 @@
-export type AppTheme = "light" | "dark";
+/**
+ * Learn more about using TypeScript with React Navigation:
+ * https://reactnavigation.org/docs/typescript/
+ */
+
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { DocumentReference } from "firebase/firestore";
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}
+
+declare type AppTheme = "light" | "dark";
 
 export type StorageMetadata = {
   id?: string;
@@ -64,25 +83,6 @@ export type OneRepMax = StorageMetadata & {
   value: number;
 };
 
-/**
- * Learn more about using TypeScript with React Navigation:
- * https://reactnavigation.org/docs/typescript/
- */
-
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import {
-  CompositeScreenProps,
-  NavigatorScreenParams,
-} from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { DocumentReference } from "firebase/firestore";
-
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
-  }
-}
-
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   User: undefined;
@@ -124,3 +124,45 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
   >;
+
+export interface User {
+  apiKey: string;
+  appName: string;
+  authDomain: string;
+  createdAt: string;
+  displayName?: string;
+  email: string;
+  emailVerified: boolean;
+  isAnonymous: boolean;
+  lastLoginAt: string;
+  multiFactor: MultiFactor;
+  phoneNumber?: string;
+  photoURL?: string;
+  providerData?: ProviderDataEntity[];
+  redirectEventId?: string;
+  stsTokenManager: StsTokenManager;
+  tenantId?: string;
+  uid: string;
+}
+
+export interface MultiFactor {
+  enrolledFactors?: string[] | string;
+}
+
+export interface ProviderDataEntity {
+  displayName?: string;
+  email: string;
+  phoneNumber?: string;
+  photoURL?: string;
+  providerId: string;
+  uid: string;
+}
+
+export interface StsTokenManager {
+  accessToken: string;
+  apiKey: string;
+  expirationTime: number;
+  refreshToken: string;
+}
+
+export type FirestoreCollection = "users";

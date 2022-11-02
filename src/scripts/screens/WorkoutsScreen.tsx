@@ -1,4 +1,5 @@
 import { Text, View } from "@components/common/Themed";
+import { SetDisplay } from "@components/Workout/SetDisplay";
 import useWorkout from "@hooks/query/useWorkout";
 import useColorScheme from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
@@ -21,11 +22,15 @@ export const WorkoutsScreen = () => {
         <View style={{ flex: 1 }}>
           <FlatList
             data={workouts?.data}
-            horizontal={true}
+            horizontal={false}
             renderItem={({ item }) => {
               return (
                 <View key={item?.id} style={[styles.workoutCard]}>
                   <Text>{item.name}</Text>
+                  {item.sets?.map((set) => {
+                    return <SetDisplay gymSet={set} />;
+                  })}
+
                   <Button
                     title="edit"
                     onPress={() => {

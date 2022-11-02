@@ -1,4 +1,4 @@
-import { AppTheme } from "@customTypes/app-types";
+import { AppTheme } from "@customTypes/";
 import React from "react";
 import { createContainer } from "unstated-next";
 

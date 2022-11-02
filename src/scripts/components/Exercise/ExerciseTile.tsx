@@ -1,5 +1,5 @@
 import { Text, View } from "@components/common/Themed";
-import { Activity, Exercise } from "@customTypes/app-types";
+import { Activity, Exercise } from "@customTypes/";
 import useActivites from "@hooks/query/useActivitIes";
 import useExercise from "@hooks/query/useExercise";
 import useOneRepMax from "@hooks/query/useOneRepMax";

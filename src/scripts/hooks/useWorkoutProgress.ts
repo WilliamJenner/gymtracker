@@ -1,5 +1,5 @@
 import { StorageKeys } from "@constants/StorageKeys";
-import { GymSet, Workout } from "@customTypes/app-types";
+import { GymSet, Workout } from "@customTypes/";
 import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 import { useFirebaseFirestore } from "./firebase/useFirebaseFirestore";
@@ -47,7 +47,7 @@ const useWorkoutProgress = ({
   }, 1000);
 
   const { getDocument } = useFirebaseFirestore<GymSet>({
-    collectionKey: StorageKeys.GymSet,
+    collectionKey: StorageKeys.GymSets,
   });
 
   // const [currentSet, setCurrentSet] = React.useState<GymSet>();
@@ -62,7 +62,7 @@ const useWorkoutProgress = ({
   // }, [currentSetIndex]);
 
   const { data: currentSet } = useQuery<GymSet, Error>(
-    [StorageKeys.GymSet, currentSetIndex],
+    [StorageKeys.GymSets, currentSetIndex],
     ({ queryKey }) => {
       const ref = workout.sets[currentSetIndex];
       return getDocument(ref);

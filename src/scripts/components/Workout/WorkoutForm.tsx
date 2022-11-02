@@ -1,6 +1,7 @@
 import { Text, View, ViewProps } from "@components/common/Themed";
+import GymSetForm from "@components/Exercise/GymSetForm";
 import { ThemedTextField } from "@components/form/common/ThemedFormFields";
-import { WorkoutDto } from "@customTypes/app-types";
+import { WorkoutDto } from "@customTypes/index";
 import { white } from "@styles/appStyles";
 import * as React from "react";
 import {
@@ -9,7 +10,7 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
-import { Button, StyleSheet } from "react-native";
+import { Button, ScrollView, StyleSheet } from "react-native";
 
 interface IWorkoutFormProps {
   onSubmit: SubmitHandler<WorkoutDto>;
@@ -32,46 +33,100 @@ const WorkoutForm = ({
     defaultValues: defaultValues,
   });
 
-  const { fields: setsFields } = useFieldArray({ control, name: "sets" });
+  const {
+    fields: setsFields,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: "sets",
+  });
+
+  const [addingActivity, setAddingActivity] = React.useState<boolean>();
 
   return (
-    <View style={styles.container} {...viewProps}>
-      <Controller
-        control={control}
-        rules={{
-          required: { value: true, message: "This is required" },
-        }}
-        render={({ field: { onChange, onBlur, value, name } }) => (
-          <ThemedTextField
-            labelText={name}
-            inputProps={{
-              onBlur: onBlur,
-              onChangeText: onChange,
-              value: value,
-            }}
-            validationLabelText={errors?.name?.message}
-          />
-        )}
-        name="name"
-      />
-
-      <View style={{ padding: 10 }}>
-        <Text>Add Sets</Text>
-
-        {setsFields.map((field, index) => {
-          <View key={index}>{field.id}</View>;
-        })}
-      </View>
-
-      <View style={styles.button}>
-        <Button
-          title={"Submit"}
-          onPress={() => {
-            handleSubmit(onSubmit)();
+    <ScrollView>
+      <View style={styles.container} {...viewProps}>
+        <Controller
+          control={control}
+          rules={{
+            required: { value: true, message: "This is required" },
           }}
+          render={({ field: { onChange, onBlur, value, name } }) => (
+            <ThemedTextField
+              labelText={name}
+              inputProps={{
+                onBlur: onBlur,
+                onChangeText: onChange,
+                value: value,
+              }}
+              validationLabelText={errors?.name?.message}
+            />
+          )}
+          name="name"
         />
+
+        <View style={{ padding: 10, flex: 1 }}>
+          <Text>Add Sets</Text>
+
+          <View style={styles.button}>
+            <Button
+              title={"New Activity"}
+              onPress={() => {
+                setAddingActivity(true);
+              }}
+            />
+          </View>
+
+          {addingActivity && (
+            <View style={{ backgroundColor: "red", padding: 2 }}>
+              <GymSetForm
+                onSubmit={(data) => {
+                  append(data);
+                  setAddingActivity(false);
+                }}
+                defaultValues={{
+                  exercise: {
+                    activity: undefined,
+                    intensity: 10,
+                    reps: 1,
+                    restTime: 90,
+                  },
+                  sets: 1,
+                }}
+              />
+            </View>
+          )}
+
+          {setsFields.map((field, index) => {
+            return (
+              <View key={field.id} style={{ flex: 1 }}>
+                <Text>name {field?.exercise?.activity?.name}</Text>
+                <Text>sets {field?.sets}</Text>
+                <Text>reps {field?.exercise?.reps}</Text>
+                <Text>intensity {field?.exercise?.intensity}</Text>
+
+                <Button
+                  title={"X"}
+                  onPress={() => {
+                    remove(index);
+                  }}
+                />
+              </View>
+            );
+          })}
+        </View>
+
+        <View style={styles.button}>
+          <Button
+            title={"Submit"}
+            onPress={() => {
+              handleSubmit(onSubmit)();
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

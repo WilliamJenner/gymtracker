@@ -1,5 +1,5 @@
 import { TextProps } from "@components/common/Themed";
-import { Activity } from "@customTypes/app-types";
+import { Activity } from "@customTypes/";
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { StyleSheet } from "react-native";
