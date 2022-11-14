@@ -35,6 +35,8 @@ const linking: LinkingOptions<RootStackParamList> = {
       EditActivity: "editActivity",
       AddExercise: "addExercise",
       EditExercise: "editExercise",
+      AddOneRepMax: "addOneRepMax",
+      EditOneRepMax: "editOneRepMax",
       AddWorkout: "addWorkout",
       EditWorkout: "editWorkout",
       WorkoutProgress: "workoutProgress",

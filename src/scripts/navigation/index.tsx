@@ -10,6 +10,7 @@ import {
   RootTabScreenProps,
 } from "@customTypes/";
 import { FontAwesome } from "@expo/vector-icons";
+import { FirebaseAuthContainer } from "@hooks/firebase/useFirebaseAuth";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   DarkTheme,
@@ -128,10 +129,11 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const { isLoggedIn } = FirebaseAuthContainer.useContainer();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Activites"
+      initialRouteName="User"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
@@ -145,89 +147,93 @@ function BottomTabNavigator() {
         })}
       />
 
-      <BottomTab.Screen
-        name="Activites"
-        component={ActivitesScreen}
-        options={({ navigation }: RootTabScreenProps<"Activites">) => ({
-          title: "Activites",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="soccer-ball-o" color={color} />
-          ),
-          headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
-              <Pressable
-                onPress={() => navigation.navigate("AddOneRepMax")}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
-              >
-                <FontAwesome
-                  name="plus-circle"
-                  size={25}
-                  color={Colors[colorScheme].text}
-                  style={{ marginRight: 15 }}
-                />
-              </Pressable>
-            </View>
-          ),
-        })}
-      />
+      {isLoggedIn && (
+        <>
+          <BottomTab.Screen
+            name="Activites"
+            component={ActivitesScreen}
+            options={({ navigation }: RootTabScreenProps<"Activites">) => ({
+              title: "Activites",
+              tabBarIcon: ({ color }) => (
+                <TabBarIcon name="soccer-ball-o" color={color} />
+              ),
+              headerRight: () => (
+                <View style={{ flexDirection: "row" }}>
+                  <Pressable
+                    onPress={() => navigation.navigate("AddOneRepMax")}
+                    style={({ pressed }) => ({
+                      opacity: pressed ? 0.5 : 1,
+                    })}
+                  >
+                    <FontAwesome
+                      name="plus-circle"
+                      size={25}
+                      color={Colors[colorScheme].text}
+                      style={{ marginRight: 15 }}
+                    />
+                  </Pressable>
+                </View>
+              ),
+            })}
+          />
 
-      <BottomTab.Screen
-        name="Exercises"
-        component={ExercisesScreen}
-        options={({ navigation }: RootTabScreenProps<"Exercises">) => ({
-          title: "Exercises",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="bicycle" color={color} />
-          ),
-          headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
-              <Pressable
-                onPress={() => navigation.navigate("AddExercise")}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
-              >
-                <FontAwesome
-                  name="plus-circle"
-                  size={25}
-                  color={Colors[colorScheme].text}
-                  style={{ marginRight: 15 }}
-                />
-              </Pressable>
-            </View>
-          ),
-        })}
-      />
+          <BottomTab.Screen
+            name="Exercises"
+            component={ExercisesScreen}
+            options={({ navigation }: RootTabScreenProps<"Exercises">) => ({
+              title: "Exercises",
+              tabBarIcon: ({ color }) => (
+                <TabBarIcon name="bicycle" color={color} />
+              ),
+              headerRight: () => (
+                <View style={{ flexDirection: "row" }}>
+                  <Pressable
+                    onPress={() => navigation.navigate("AddExercise")}
+                    style={({ pressed }) => ({
+                      opacity: pressed ? 0.5 : 1,
+                    })}
+                  >
+                    <FontAwesome
+                      name="plus-circle"
+                      size={25}
+                      color={Colors[colorScheme].text}
+                      style={{ marginRight: 15 }}
+                    />
+                  </Pressable>
+                </View>
+              ),
+            })}
+          />
 
-      <BottomTab.Screen
-        name="Workouts"
-        component={WorkoutsScreen}
-        options={({ navigation }: RootTabScreenProps<"Workouts">) => ({
-          title: "Workouts",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="bullhorn" color={color} />
-          ),
-          headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
-              <Pressable
-                onPress={() => navigation.navigate("AddWorkout")}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
-              >
-                <FontAwesome
-                  name="plus-circle"
-                  size={25}
-                  color={Colors[colorScheme].text}
-                  style={{ marginRight: 15 }}
-                />
-              </Pressable>
-            </View>
-          ),
-        })}
-      />
+          <BottomTab.Screen
+            name="Workouts"
+            component={WorkoutsScreen}
+            options={({ navigation }: RootTabScreenProps<"Workouts">) => ({
+              title: "Workouts",
+              tabBarIcon: ({ color }) => (
+                <TabBarIcon name="bullhorn" color={color} />
+              ),
+              headerRight: () => (
+                <View style={{ flexDirection: "row" }}>
+                  <Pressable
+                    onPress={() => navigation.navigate("AddWorkout")}
+                    style={({ pressed }) => ({
+                      opacity: pressed ? 0.5 : 1,
+                    })}
+                  >
+                    <FontAwesome
+                      name="plus-circle"
+                      size={25}
+                      color={Colors[colorScheme].text}
+                      style={{ marginRight: 15 }}
+                    />
+                  </Pressable>
+                </View>
+              ),
+            })}
+          />
+        </>
+      )}
     </BottomTab.Navigator>
   );
 }

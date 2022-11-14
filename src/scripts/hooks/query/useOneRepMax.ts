@@ -13,15 +13,17 @@ import { DocumentReference } from "firebase/firestore";
 interface IUseOneRepMax {
   oneRepMaxes: UseQueryResult<OneRepMax[], Error>;
   saveOneRepMax: UseMutationResult<void, Error, OneRepMax, unknown>;
+  updateOneRepMax: UseMutationResult<void, Error, OneRepMax, unknown>;
   deleteOneRepMax: UseMutationResult<void, Error, OneRepMax, unknown>;
 }
 
 const useOneRepMax = (): IUseOneRepMax => {
   const { isLoggedIn } = FirebaseAuthContainer.useContainer();
 
-  const { getData, saveData, deleteData } = useFirebaseFirestore<OneRepMax>({
-    collectionKey: StorageKeys.OneRepMax,
-  });
+  const { getData, saveData, deleteData, updateData } =
+    useFirebaseFirestore<OneRepMax>({
+      collectionKey: StorageKeys.OneRepMax,
+    });
 
   const { queryForDoc: queryForActivity } = useFirebaseFirestore<Activity>({
     collectionKey: StorageKeys.Activites,
@@ -45,6 +47,16 @@ const useOneRepMax = (): IUseOneRepMax => {
     }
   );
 
+  const updateOneRepMax = useMutation<void, Error, OneRepMax, unknown>(
+    async (oneRepMax) => {
+      if (isLoggedIn && oneRepMax.activity) {
+        await updateData(oneRepMax);
+
+        await oneRepMaxes.refetch();
+      }
+    }
+  );
+
   const deleteOneRepMax = useMutation<void, Error, OneRepMax, unknown>(
     async (oneRepMax) => {
       if (isLoggedIn && oneRepMax.id) {
@@ -57,6 +69,7 @@ const useOneRepMax = (): IUseOneRepMax => {
   return {
     oneRepMaxes,
     saveOneRepMax,
+    updateOneRepMax,
     deleteOneRepMax,
   };
 };

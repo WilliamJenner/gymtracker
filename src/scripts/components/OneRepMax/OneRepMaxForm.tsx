@@ -1,9 +1,10 @@
 import ActivitySelector from "@components/Activity/ActivitySelector";
 import { Text, View } from "@components/common/Themed";
 import TextField from "@components/form/common/TextField";
-import { OneRepMax, OneRepMaxDto } from "@customTypes/";
+import { OneRepMax, OneRepMaxDto } from "@customTypes/index";
 import useActivites from "@hooks/query/useActivitIes";
 import { white } from "@styles/appStyles";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
@@ -17,6 +18,8 @@ export const OneRepMaxForm = ({
   onSubmit,
   defaultValues,
 }: IOneRepMaxFormProps) => {
+  const { activities, getDocument } = useActivites({});
+
   const {
     control,
     handleSubmit,
@@ -24,10 +27,29 @@ export const OneRepMaxForm = ({
     watch,
     formState: { errors },
   } = useForm<OneRepMaxDto>({
-    defaultValues: defaultValues,
+    defaultValues: {
+      activity: undefined,
+      value: 100,
+    },
   });
 
-  const { activities } = useActivites({});
+  const activityDocument = useQuery(
+    [defaultValues?.activity.id, "activity-one-rep-max"],
+    () => {
+      console.log(defaultValues?.activity.id);
+      if (Boolean(defaultValues?.activity.id)) {
+        console.log("getting");
+        return getDocument(defaultValues!.activity);
+      } else return undefined;
+    }
+  );
+
+  React.useEffect(() => {
+    console.log(activityDocument);
+    if (activityDocument.data) {
+      setValue("activity", activityDocument.data);
+    }
+  }, [activityDocument.data]);
 
   const getSelectedActivity = React.useCallback(
     (activityId?: string) => {
@@ -35,6 +57,8 @@ export const OneRepMaxForm = ({
     },
     [activities.data]
   );
+
+  console.log(watch());
 
   return (
     <View style={styles.container}>

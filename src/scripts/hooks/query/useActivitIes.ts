@@ -2,11 +2,14 @@ import { StorageKeys } from "@constants/StorageKeys";
 import { Activity } from "@customTypes/index";
 import { useFirebaseFirestore } from "@hooks/firebase/useFirebaseFirestore";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { DocumentReference } from "firebase/firestore";
+import { DocumentData, DocumentReference } from "firebase/firestore";
 
 interface IUseActivity {
   activities: UseQueryResult<Array<Activity>, Error>;
   activity: UseQueryResult<Activity, Error>;
+  getDocument: <Activity extends DocumentData>(
+    document: DocumentReference<Activity>
+  ) => Promise<Activity>;
 }
 
 interface IUseActivitesParams {
@@ -39,6 +42,7 @@ const useActivites = (props: IUseActivitesParams): IUseActivity => {
   return {
     activities,
     activity,
+    getDocument,
   };
 };
 

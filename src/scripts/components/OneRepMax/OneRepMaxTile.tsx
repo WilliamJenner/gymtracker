@@ -1,5 +1,5 @@
 import { Text, View } from "@components/common/Themed";
-import { Activity, OneRepMax } from "@customTypes/";
+import { Activity, OneRepMax } from "@customTypes/index";
 import useActivites from "@hooks/query/useActivitIes";
 import useOneRepMax from "@hooks/query/useOneRepMax";
 import { useNavigation } from "@react-navigation/native";
